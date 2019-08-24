@@ -4,7 +4,7 @@
 
 ### 简单的低耦合代码
 
-```
+```java{4}
 package com.sxt.cn;
 import java.util.Scanner;
 

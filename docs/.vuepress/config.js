@@ -12,6 +12,7 @@ module.exports = {
     themeConfig: {
         repo: 'kirigayakazima/JavaDesign',
         editLinks: true,
+        sidebarDepth: 2,
         editLinkText: '在 GitHub 上编辑此页',
         lastUpdated: '上次更新时间：',
         sidebar: {
