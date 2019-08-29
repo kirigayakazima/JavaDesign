@@ -19,13 +19,16 @@ module.exports = {
             '/JavaBook/': [
                 'about',
                 'JavaDesign01'
-            ]
-        }
-        /*nav: [
+            ],
+            '/JavaBaseBook/': [
+                    'JavaBase01'
+                ]
+        },
+        nav: [
             {text: '首页',link:'/'},
-            {text: '导航',link:'/'},
-            {text: '前端',link:''},
-            {text: '后端',link:'/JavaBook/JavaDesign01'},
+            /*{text: '导航',link:'/'},
+            {text: '前端',link:''},*/
+            {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
             {text: '关于',link:'/JavaBook/about'},
             {
                 text: '分享',
@@ -34,7 +37,7 @@ module.exports = {
                     {text: '奇闻妙事',link:''},
                 ]
             },
-            {text: 'Github',link:'https://github.com/kirigayakazima'}
-        ],*/
+            //{text: 'Github',link:'https://github.com/kirigayakazima'}
+        ]
     }
 }
