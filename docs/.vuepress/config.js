@@ -23,7 +23,8 @@ module.exports = {
             '/JavaBaseBook/': [
                     'JavaBase01',
                     'JavaBase02',
-                    'JavaBase03'
+                    'JavaBase03',
+                    'JavaBase04'
                 ]
         },
         nav: [
