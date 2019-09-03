@@ -19,7 +19,7 @@ public interface Comparable<T>
 class Employee implements Comparable{}
 ```
 接口不是类，只能由子类实现，接口也可以被继承
-### （2）抽象类
+## （2）抽象类
 ```Java{2}
 //抽象类在声明过程不需要实现，实现由子类进行
 abstract class Comparable
@@ -36,5 +36,5 @@ class Employee extends Comparable
 *Java的类不支持多继承，但是接口支持多继承*
 接口可以提供多重继承的大多数好处，同时还能避免多重继承的复杂性和低效性。
 
-### (3) 对象克隆
+## (3) 对象克隆
 当拷贝一个变量时，原始变量和拷贝变量会引用同一个对象，这个时候改变一个变量所引用的对象的时候将会对另一个变量产生影响.
