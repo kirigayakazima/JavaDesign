@@ -64,7 +64,7 @@ setLocationByPlatform(true);
 Image img=new ImageIcon("logo.png").getImage();
 setIconImage(img);
 ```
-### (3)处理2D图形
+## 三、处理2D图形
 ```Java{2}
 //创建一个Rectangle2D.Float对象时，应该提供float
 型数值的坐标，而闯进Rectangle2D.Double对象时。应该提供double型数值的坐标
@@ -154,5 +154,5 @@ Point2D.Double(double x,double y)
 Line2D.Double(Ponit2D,start,Point2D end)
 Line2D.Double(double startx,double starty,double endx,double endy)
 ```
-### (4) 使用颜色
+## 四、 使用颜色
 使用Graphics2D类的setPaint方法可以为图形环境上的所有后续的绘制操作选择颜色
