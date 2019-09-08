@@ -6,7 +6,7 @@
 3.布局管理器是策略模式
 ```
 MVC模式：模型-视图-控制器
-##一、布局
+## 一、布局
 布局采用流布局的方式
 ```Java{2}
 void SetLayout(LayoutManager m);                //为容器设置布局管理器
@@ -40,7 +40,7 @@ frame.add(panel,BorderLayoout.SOUTH);
 BorderLayout();
 BorderLayout(int hgap,int vgap);
 ```
-### 网格布局
+### (2)网格布局
 第一行| ||第四列
 ---|---|---|---
 第二行|  | 
@@ -196,3 +196,115 @@ import javax.swing.JPanel;
 	 }
  }
 ```
+## 三、选择组件
+### (1)  复选框
+```Java{2}
+JCheckBox bold=new JCheckBox("Bold");
+//使用该方法来选定或者取消复选框
+bold.setSelected(true);
+
+//先添加一个监听器
+JCheckBox bold=new JCheckBox("Bold");
+JCheckBox italic=new JCheckBox("Italic");
+ActionListener listener=new ActionListener();
+//两个复选框共用了一个动作监听器
+bold.addActionListener(listener);
+italic.addActionListener(listener);
+//actionPerformed方法查询bold和italic两个复选框的状态
+public void actionPerformed(ActionEvent event){
+    int mode=0;
+    //isSelected方法判断复选框是否被选中
+    if(bold.isSelected())mode+=Font.BOLD;
+    if(italic.isSelected())mode+=Font.ITALIC;
+    label.setFont(new Font("Serif",mode,FONTSIZE));
+}
+
+```
+### (2) 单选框
+```Java{2}
+ButtonGroup group=new ButtonGroup();
+//单选框，有两个选项，当前选择的是btn这个选项
+JRadioButton button=new JRadioButton("button",false);
+group.add(button);
+JRadioButton btn=new JRadioButton("btn",true);
+group.add(btn);
+```
+### (3) 边框
+```Java{2}
+Border etched=BorderFactory.creatEtchedBorder();
+//先把标题添加到边框上
+Border titled=BorderFactory.creatTitleBorder(etched,"标题");
+//再把这个边框整体添加到面板上
+panel.setBorder(titled);
+
+//这个static Border方法调用的时候需要用BorderFactory.creatLineBorder()下面的方法类似;用工厂模式调用
+//创建一个简单的直线边框
+static Border creatLineBorder(Color color);
+static Border creatLineBorder(Color color,int thickness);
+//创建一个用color样色或者一个重复图标填充的粗的边框
+static MatteBorder creatMatteBorder(int top,int left,int bottom);
+static MatteBorder creatMatteBorder(int top,int left,int bottom,int right,Icon titleIcon);
+```
+### (4) 组合框(下拉菜单)
+```Java{2}
+//先创建一个下拉菜单，然后用addItem方法把字符串加进去，这个方法将字符串添加到列表的尾部，也可以利用insertItemAt方法在列表的任何位置插入一个新选项，可以使用removeItem方法删除某些选项，或者用removeItemAt删除指定位置的内容
+JComboBox<String> faceCombo=new JCompoBox<>();
+faceCombo.addItem("Serif");
+faceCombo.addItem("SansSerif");
+
+```
+### (5) 滑动条
+```Java{2}
+//先创建一个滑动条对象
+JSlider slider=new JSlider(min,max,initialValue);
+//创建一个垂直滑动条
+ JSlider slider=new JSlider(SwingConstants.VERTICAL,min,max,initialValue);
+ 
+ //加一个监听器
+ public void stateChanged(ChangeEven event){
+     JSlider slider=(JSlider) event.getSource();
+     int value=slider.getValue();
+ }
+ 
+ //给滑动条设置大小标记，并且让他们显示
+ slider.setMajorTickSpacing(20);
+ slider.setMinorTickSpacing(5);
+ slider.setPaintTicks(true);
+```
+
+## 四、菜单
+### (1) 创建菜单
+```Java{2}
+//首先创建一个菜单栏
+JMenuBar menuBar =new JMenuBar();
+//然后为每一个菜单建立一个菜单对象
+JMenu editMenu =new Jmenu("Edit");
+//然后将顶层菜单添加到菜单栏里面
+menuBar.add(editMenu);
+//然后依旧是把菜单栏添加到frame框架当中
+frame.setMenuBar(menuBar);
+```
+### (2) 菜单项中的图标
+```Java{2}
+//用给定的标签和图标构造一个菜单项
+JMenuItem(String label,Icon icon);
+//设置文本对应的图标的水平位置
+void setHoriziontalTextPosition(int pos)
+//用给定的名字和图标构造一个抽象的动作
+AbstractAction(String name,Icon smallIcon);
+```
+### (3) 复选框和单选按钮菜单项
+```Java{2}
+//用给定的标签构造一个复选框菜单项
+JCheckBoxMenuItem(String label);
+//用给定的标签和给定的初始状态构造一个复选框菜单\
+JCheckBoxMenuItem(String label,boolean state);
+//用给定的标签构造一个单选按钮菜单项
+JRadioButtonMenuItem(String label);
+//用给定的标签和给定的初始状态构造一个但炫按钮菜单项
+JRadioButtonMenuItem(String label,boolean state);
+//获取或者设置这个菜单项的选择状态
+boolean isSelected();
+boid setSelected(boolean state);
+```
+
