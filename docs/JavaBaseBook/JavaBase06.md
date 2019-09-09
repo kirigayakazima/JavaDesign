@@ -196,6 +196,34 @@ import javax.swing.JPanel;
 	 }
  }
 ```
+## 二、文本输入
+JTextField文本域和JTextArea文本区组件用于获取文本输入。文本域只能接收单行文本输入，而文本区能够接收多行文本的输入。JPassword也只能接收单行文本的输入，但不会将输入的内容显示出来。这三个类都继承与JTexComponent。
+### (1) 文本域
+```Java{2}
+JPanel panel=new JPanel();
+//传递字符串将它初始化，设置了文本域的宽度为20,可以在初始化的时候不赋值，只是设置宽度
+JTextField textField=new JTextField("Default input",20);
+panel.add(textField);
+
+//如果需要在运行时重新设置列数，可以使用setColumns 但是使用了这个方法之后，需要调用包含这个文本框容器的revalidate方法
+textField.setColumns(10);
+//这个方法时JComponent 类中的方法，他并不是马上就改变组件大小，而是给这个组件添加一个需要改变大小的标记
+panel.revalidate();
+
+//获取用户从键盘输入的文本,并且去掉内容的前后空格
+ String text=textField.getText().trim();
+```
+### (2) 文本区
+```Java{2}
+//8行40列,超过文本区的会被裁剪
+JTextArea textArea =new JTextArea(8,40);
+```
+### (3) 滚动窗格
+```Java{2}
+//只在创个管理文本区的视图内进行滚动，当文本超出文本区的时候
+JTextArea  textArea=new JTextArea(8,40);
+JScrollPane scrollPane=new JScrollPane(textArea);
+```
 ## 三、选择组件
 ### (1)  复选框
 ```Java{2}
