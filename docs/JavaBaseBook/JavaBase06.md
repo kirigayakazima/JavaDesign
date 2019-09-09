@@ -307,4 +307,84 @@ JRadioButtonMenuItem(String label,boolean state);
 boolean isSelected();
 boid setSelected(boolean state);
 ```
+### (4) 弹出菜单
+```Java{2}
+//首先创造一弹出彩单
+JPopupMenu popup =new JPopupMenu();
+
+JMenuItem item=new JMenuItem("Cut");
+item.addActionListener(listener);
+popup.add(item);
+//弹窗不需要放在frame框架上面才能显示,它自己有显示的show法
+popup.show(panel,x,y);
+
+//如果鼠标事件是弹出菜单触发器，则返回true
+boolean isPopupTrigger(MouseEvent event);
+//获取或者设置用于这个组件的弹出菜单
+ JPopupMenu getComponentPopupMenu();
+ void setComponentPopupMenu(JPopupMenu popup);
+
+//用给定的标签和快捷键字符构造一个菜单项
+JMenuItem(String label,int mneemonic)
+//将K设置为这个菜单项的加速器，加速器显示在标签旁边
+void setAccelerator(KeyStroke k)
+//设置按钮的快捷字符，该字符会在标签中以下划线的形式显示
+void setMnemonic(int mnemonic)
+//将按钮文本的index字符设定为带下划线的，如果不希望第一个出现的快捷键字符带下划线就可以使用这个方法
+void setDisplayedMnemonicIndex(int index)
+```
+### (5) 启用和禁用菜单项
+```Java{2}
+//启用或者禁用菜单项
+void setEnabled(boolean b)
+//在菜单被选择但尚未打开之前调用
+void menuSelected(MenuEvent e)
+//在菜单被取消选择并且已经关闭之后被调用
+void menuDeselected(MenuEvent e)
+//在菜单被取消时，被调用，例如，用户点击菜单以外的区域
+void menuCanceled(MenuEvent e)
+```
+### (6) 工具栏
+```Java{2}
+//创建工具栏
+JtoolBar bar =new JToolBar();
+bar.add(blueButton);
+//添加一个动作图标 
+bar.add(blueAction);
+
+//用给定的标题字符串和方向构造一个工具栏,Orientation可以是SwingConstants
+JToolBar()
+JToolBar(String titleString)
+JToolBar(int orientation)
+JToolBar(String titleString ,int orientation)
+//用给定的动作名、图标、简要的说明和动作回调构造一个工具栏中的新按钮
+JButton add(Action a)
+//将一个分隔符添加到工具栏的尾部
+void addSeparator()
+//设置当鼠标停留在组件上时显示在工具提示中的文本
+```
+## 五、复杂的布局管理
+### (1) 网格组布局
+```Java{2}
+//一个简单的GridBagConstrains对象
+GridBagLayout layout=new GirdBagLayout();
+panel.setLayout(layout);
+GirdBagConstraints constraints=new GridBagConstraints();
+constraints.weightx=100;
+constraints.weighty=100;
+constraints.gridx=0;                    //代表左上角x
+constraints.gridy=2;                    //代表左上角y
+constraints.gridwidth=2;
+constraints.gridheight=1;
+panel.add(component,constraints);
+```
+## 六、对话框
+### (1) 选项对话框
+```Java{2}
+//简单的对话框
+showMessageDialog                   //显示一条消息并等待用户点击ok
+showConfirmDialog                   //显示一条消息并等待用户确认(与ok/Cancel类似)
+showOptionDialog                    //显示一条消息并获得用户在一组选项中的选择
+showInputDialog                     //显示一条消息并获得用户输入的一行文本
+```
 
