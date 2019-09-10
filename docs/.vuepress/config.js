@@ -26,7 +26,8 @@ module.exports = {
                     'JavaBase03',
                     'JavaBase04',
                     'JavaBase05',
-                    'JavaBase06'
+                    'JavaBase06',
+                    'JavaBase07'
                 ]
         },
         nav: [
