@@ -28,12 +28,15 @@ module.exports = {
                     'JavaBase05',
                     'JavaBase06',
                     'JavaBase07'
-                ]
+                ],
+            '/DataBase/' : [
+                'DataBase01'
+            ]
         },
         nav: [
             {text: '首页',link:'/'},
-            /*{text: '导航',link:'/'},
-            {text: '前端',link:''},*/
+            {text: '数据库',link:'/DataBase/DataBase01'},
+            /*{text: '前端',link:''},*/
             {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
             {text: '关于',link:'/JavaBook/about'},
             {
