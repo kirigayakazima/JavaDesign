@@ -30,7 +30,8 @@ module.exports = {
                     'JavaBase07'
                 ],
             '/DataBase/' : [
-                'DataBase01'
+                'DataBase01',
+                'DataBase02'
             ]
         },
         nav: [
