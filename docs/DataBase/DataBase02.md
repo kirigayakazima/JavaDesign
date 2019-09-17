@@ -89,3 +89,14 @@ select username, pwd from t_user where id IN (4,9) order by pwd;
 //取id非4和9的其他数据，not在这种简单的语句中没有什么优势，但是在复杂的语句中非常占有优势
 select usernanme, pwd from t_user where id not IN (4,9) order by pwd;
 ```
+### 六、通配符过滤
+*通配符不要过度使用*
+```
+//取出以e开头的数据
+select username, pwd from t_user where username like 'e%';
+//取出含有x的数据
+select username, pwd from t_user where username like '%x%';
+//取出以s开头e结尾的数据
+select username, pwd from t_user where username like 's%e';
+//_的用法和%一样，但是只能匹配单个字符,匹配se开头的数据
+select username, pwd from t_user where username like '_se'
