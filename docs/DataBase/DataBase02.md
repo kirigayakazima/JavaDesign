@@ -89,7 +89,7 @@ select username, pwd from t_user where id IN (4,9) order by pwd;
 //取id非4和9的其他数据，not在这种简单的语句中没有什么优势，但是在复杂的语句中非常占有优势
 select usernanme, pwd from t_user where id not IN (4,9) order by pwd;
 ```
-### 六、通配符过滤
+## 六、通配符过滤
 *通配符不要过度使用*
 ```
 //取出以e开头的数据
@@ -100,3 +100,46 @@ select username, pwd from t_user where username like '%x%';
 select username, pwd from t_user where username like 's%e';
 //_的用法和%一样，但是只能匹配单个字符,匹配se开头的数据
 select username, pwd from t_user where username like '_se'
+```
+## 七、正则表达式
+### (1)普通指令
+```
+//检索列usernmae其中包含1000的所有行
+select username, pwd from t_user where uername regexp '1000' order by uername;
+//like和regexp的区别在于前者是匹配整个列，后者不能匹配整个列,正则表达式的匹配不区分大小写
+//正则表达式中使用or语句
+regexp '1000|2000';
+//匹配1或者2或者3
+ regexp '[123]';
+ regexp '1|2|3';
+//匹配1-9，a-z
+regexp '[1-9]'
+regexp 'a-z'
+```
+### (2)特殊匹配符
+```
+//特殊匹配符.使用的时候必须使用 \\把它转义，当做前导,
+regexp '\\.'                //表示检索.
+regexp '\\-'                //表示检索-
+regexp '\\f'                //换页
+regexp '\\n'                //换行
+regexp '\\r'                //回车
+regexp '\\t'                //制表
+regexp '\\v'                //纵向制表
+regexp '\\\'                //表示检索\
+
+//重复元字符
+*                           //0个或者多个匹配
++                           //1个或者多个匹配(等于{1,})
+?                           //0个或者1个匹配(等于{0,1})
+{n}                         //指定数目的匹配
+{n,}                        //不少于指定数的匹配
+{n,m}                       //匹配数目的范围(m的范围不超过255)
+```
+### (3)定位符
+```
+^                           //文本的开始
+$                           //文本的结尾
+[[:<:]]                     //词的开始
+[[:>:]]                     //词的结尾
+```
