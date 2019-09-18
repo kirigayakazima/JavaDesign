@@ -143,3 +143,57 @@ $                           //文本的结尾
 [[:<:]]                     //词的开始
 [[:>:]]                     //词的结尾
 ```
+## 八、创建计算手段
+### (1)拼接
+```
+//输出是ee(123456)这种形式
+select Concat(username, '(',pwd,')') from t_user order by username;
+//还可以使用RTrim去掉右侧空格，LTrim去掉左侧空格,Trim去掉所有空格
+select Concat(RTrim(username),'(',LTrim(pwd),')') from t_user order by username;
+```
+### (2)使用别名
+```
+//首行显示为excel
+select Concat(RTrim(username),'(',RTrim(pwd),')') as excel from t_user order by username;
+```
+### (3)执行算数计算
+```
+//此处使用t_price这个表，显示一个新的列expan_price,并且排序
+select name,price,weight,price*weight as expan_price from t_price where num =1 order by expan_price;
+```
+## 九、使用数据处理函数
+### (1)常用文本处理函数
+```
+Left()                      //返回串左边的字符
+Length()                    //返回串的长度
+Locate()                    //找出穿的一个子串
+Lower()                     //将串转化为小写
+LTrim()                     //去掉左边的空格
+Right()                     //返回右边的串
+RTrim()                     //去掉串右边的空格
+Soundex()                   //返回串的SOUNDEX值
+SubString()                 //返回子串的字符
+Upper()                     //将串转换为大写
+//全部化成大写
+select username,Upper(username) as upper_username from t_user order by username;
+//查找和ax发音相似的
+select username, pwd from t_user where Soundex(username)=Soundex('ax');
+
+```
+### (2)时间函数
+```
+//建议使用以下形式的,使用Date是一个好习惯
+select username, pwd from t_user where Date(regTime)='2005-09-01';
+```
+### (3)数值处理函数
+```
+Abs()
+Cos()
+Exp()
+Mod()
+Pi()
+Rand()
+Sin()
+Sqrt()
+Tan()
+```
