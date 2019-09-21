@@ -197,3 +197,39 @@ Sin()
 Sqrt()
 Tan()
 ```
+## 十、数据汇总
+```
+AVG()                   //返回某列的平均值
+COUNT()                 //返回某列的行数
+MAX()                   //返回某列的最大值
+MIN()                   //返回某列的最小值
+SUM()                   //返回某列值之和
+```
+## 十一、分组数据
+```
+//使用语句查看不同组的信息
+select num, Count(*) as num_Com from t_price group by num;
+```
+### (1) 过滤分组
+```
+//having能够兼容所有where的操作
+//使用having过滤获得组内成员数量大于2的分组
+select num,Count(*) as num_Com from t_price group by num having Count(*)>2;
+```
+### (2) 分组和排序
+
+order by | group by
+---|---
+排序产生的输出| 分组行，但是输出可能不是分组的顺序
+任意列都可以使用使用（甚至非选择的列也可以使用）| 只可能使用选择列或者表达式列，而且必须使用每个选择列表达式
+不一定需要|如果与聚焦函数一起使用列，则必须要使用
+
+## 十二、使用子查询
+###  利用子查询进行过滤
+```
+//返回num为2的price的所有数据
+select num,name,price from t_price where price IN(select price from t_price where num='2');
+
+//先找到customer为Tom的所有数据，然后在在这些数据里面找到对应的num数据，在通过num数据找到对应的全部数据
+select num,name,price,price*weight as Price from t_price where num IN(select num from t_price where customer IN(select customer from t_price where customer='Tom'));
+```
