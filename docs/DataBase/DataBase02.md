@@ -1,6 +1,6 @@
 # MySql入门
 ## 一、基本操作
-```Mysql{2}
+```
 //针对本机的mysql数据库，登录语句
 mysql -hlocalhost -uroot -p123456
 //显示数据库
@@ -25,7 +25,7 @@ show create table t_user;
  show warning;
 ```
 ## 二、检索
-```Mysql{2}
+```
 //检索一个列
 select pwd from t_user;
 //检索多个列
@@ -41,7 +41,7 @@ select pwd from t_user limit 1,1;           //返回第二行
 select pwd from mydb2.t_user;
 ```
 ## 三、排序
-```Mysql{2}
+```
 //对名字进行按照字母顺序排序
 select username from t_user order by username;
 //对多个列进行排序
@@ -50,7 +50,7 @@ select username, pwd from t_user order by username, pwd;
 select pwd from t_user order by pwd DESC;
 ```
 ## 四、过滤数据
-```Mysql{2}
+```
 //过滤出pwd为456的数据
 select pwd, username from t_user where pwd=456;
 //where操作符
@@ -70,7 +70,7 @@ select username,pwd from t_user where pwd between 44 and 789;
 select pwd from t_user where pwd is null;
 ```
 ## 五、组合过滤
-```Mysql{2}
+```
 //使用and同时约束两个属性
 select username, pwd from t_user where username!='ee' and pwd >=20;
 //使用or
@@ -80,12 +80,12 @@ select usernmae, pwd from t_user where username='ee' or pwd >789;
 and的优先级大于or
 可以自行使用()进行优先级运算
 ### (2)IN操作符
-```Mysql{2}
+```
 //只取id为4和9的，并且按照pwd排序,用法和or差不多，
 select username, pwd from t_user where id IN (4,9) order by pwd;
 ```
 ### (3)not操作符
-```Mysql{2}
+```
 //取id非4和9的其他数据，not在这种简单的语句中没有什么优势，但是在复杂的语句中非常占有优势
 select usernanme, pwd from t_user where id not IN (4,9) order by pwd;
 ```
@@ -232,4 +232,35 @@ select num,name,price from t_price where price IN(select price from t_price wher
 
 //先找到customer为Tom的所有数据，然后在在这些数据里面找到对应的num数据，在通过num数据找到对应的全部数据
 select num,name,price,price*weight as Price from t_price where num IN(select num from t_price where customer IN(select customer from t_price where customer='Tom'));
+```
+## 十三、联结表
+### (1)创建联结
+不能删除where，where很重要，不然就找不到想要的数据，所有的联结里面都应该具有where语句
+```
+//查找出t_user和t_price这两个表中有相同的num的数据
+select name,price from t_user,t_price where t_user.num=t_price.num;
+```
+### (2)内部联结
+```
+//用法和where差不多，只是更规范
+select name,price from t_user INNER JOIN t_price ON t_user.num=t_price.num;
+
+```
+### (3) 连接多个表
+联结的表越多，性能越低，因此不要联结不必要的表
+
+## 十四、创建高级联结
+### (1)使用别名
+更加方便操作
+### (2)不同类型的联结
+目前为止使用的所有联结都是自然联结
+```
+//自联结
+select p1.num,p1.name from t_user as p1,t_user as p2 where p1.num=p2.num and p2.num='1';
+
+```
+
+```
+//外部联结,可以使用RIGHT和LEFT
+select t_user.num,t_price.name from t_user RIGHT OUTER JOIN t_price ON t_price.name=t_user.name;
 ```
