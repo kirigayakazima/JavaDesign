@@ -264,3 +264,32 @@ select p1.num,p1.name from t_user as p1,t_user as p2 where p1.num=p2.num and p2.
 //外部联结,可以使用RIGHT和LEFT
 select t_user.num,t_price.name from t_user RIGHT OUTER JOIN t_price ON t_price.name=t_user.name;
 ```
+## 十五、组合查询
+### (1)使用UNION
+使用UNION必须由两条或者以上的select语句才能够使用
+```
+//连接两个select语句
+select num,name,price from t_price where id>4 and id<8 UNION select num, name from t_user where id>5 and id<8;
+```
+### (2)包含或取消重复的行
+UNION默认去重，使用UNION ALL可以取消默认行为
+### (3)对组合查询结果排序
+只能使用一条order语句，因此只能放在最后一个select后面，但是order是属于最后一条语句的
+## 十六、全文本搜索
+```
+//扩展搜索
+select note_text from productnotes where match(note_text) Against('anvils' WITH QUERY EXPANSION);
+//布尔文本搜索
+select note_text from productnotes where Match(note_text) Against('heavy' IN BOOLEAN MODE);
+//为了匹配heavy但不包含任意以rope开始的词的行，可以使用以下查询
+select note_text from productnotes where Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
+
++               //包含，词必须存在
+-               //排除，词必须不出现
+>               //包含，而且增加等级值
+<               //包含，且减少等级值
+()              //把词组成子表达式(允许这些子表达式作为一个组被包含，排除，排列等)
+~               //取消一个词的排序值
+*               //词尾的通配符
+""              //定义一个短语(与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语)
+```
