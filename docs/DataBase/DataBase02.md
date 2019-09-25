@@ -293,3 +293,60 @@ select note_text from productnotes where Match(note_text) Against('heavy -rope*'
 *               //词尾的通配符
 ""              //定义一个短语(与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语)
 ```
+## 十七、插入数据
+### (1)插入一个完整的行
+```
+//建议使用这种提供列名的方法，以免出现不必要的错误
+insert into t_price(id,num,name,price,weight,customer) values('12','4','Apple','5.1','5.2','Ray');
+//提高性能，降低insert语句的优先级，在insert后面加上LOW_PRIORITY
+insert low_priority into
+```
+### (2)插入多个行
+可以使用多个语句，在每个语句后面加上;隔开，或者在values里面再加上一个(),每一个()就是一组数据
+### (3)插入检索出的数据
+把一条select语句插入到表中，形成所谓的insert select
+```
+//把t_prices这个表的内容导入到t_price这个表当中,前提是t_prices中的id在price当中没用过
+insert into t_price(id,num,name,price,weight,customer) select id,num,name,price,weight,customer from t_prices;
+```
+## 十八、更新和删除数据
+### (1)更新数据
+```
+update t_price set name='last' where id='13';
+update t_price set name='last',num='3' where id='13';
+```
+### (2)删除数据
+```
+//一定要小心，不能省略where，不然数据库就没有了,只是删除表里面的内容，而不是删除表本身
+delete from t_price where id='13';
+```
+## 十九、创建和操作表
+### (1)创建
+```
+//auto_increment    自动增加
+create table t_price(
+id          int         not null auto_increment,
+num         int         not null,
+name        char(50)    null.
+price       double      null,
+weight      double      null.
+customer    char(50)    null,
+primary key(id)
+)engine=InnoDB;
+```
+### (2)引擎类型
+所有的create table语句都要以ENGINE=InnoDB结尾，当然也可以使用其他的几个引擎<br>
+InnoDB是一个可靠的事务处理引擎，它不支持全文本搜索
+MEMORY在功能等同于MyISAM,但是由于数据储存在内存(不是在磁盘)中，速度很快(特别适合于临时表)<br>
+MyISAM是一个性能极高的引擎，它支持全文本搜索，但不支持事务处理<br>
+### (3)表操作
+```
+//给这个表添加一个新的列，
+alter table t_prices add prices double;
+//删除刚刚新添加的咧
+alter table t_price drop column prices;
+//删除表
+drop table t_user;
+//重命名表
+rename table t_user to t_users;
+```
