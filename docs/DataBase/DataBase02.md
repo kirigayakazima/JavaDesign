@@ -350,3 +350,53 @@ drop table t_user;
 //重命名表
 rename table t_user to t_users;
 ```
+## 二十、使用视图
+### (1) 视图
+```
+//使用限制，视图必须命名唯一，不能给视图取与别的视图或者表相同的名字
+//从两个表当中选择出username,name,price这几个属性，同时对这几个属性进行限制
+select username,name,price from t_user,t_price where t_user.id=t_price.id and t_user.num=t_price.num and t_price.num='1';
+```
+## 二十一、安全管理
+### (1)创建账号
+```
+//查看user,必须在mysql这个数据库中进行查看,以下操作都在mysql中进行操作
+select user from user;
+//创建一个用户名为xuaner密码为19990301的账户
+create user xuaner identified by '19990301';
+//修改用户名
+rename user xuaner to qingyu;
+//删除用户名
+drop user qingyu;
+//查看账户的权限
+show grants for xuaner;
+//给xuaner这个账户设置mydb2这个数据库里面所有的表的只读的权限
+grant select  on mydb2.* to xuaner;
+//使用revoke撤销赋予xuaner的权限
+revoke select on mydb2.* from xuaner;
+//更改密码，并且进行加密，新的摩玛必须使用Password()加密
+set password for xuaner=Password('199903');
+//也可以使用set password =Password('123456');来修改自己的密码，不加以修改root密码，免得忘了
+```
+## 二十二、备份数据
+### (1)维护数据库
+```
+//检查t_user这个表的表键是否正确
+analyze table t_user;
+//发现并且恢复问题
+check table t_user,t_price;
+
+//诊断启动问题
+--help显示帮助一个选项列表
+--safe-mode装在减去某些最佳配置的服务器
+--verbose显示全文本消息(为获得更详细的帮助消息与--help联合使用)
+--version显示版本信息然后退出
+```
+### (2)查看日志文件
+```
+-错误日志。通常命名为hostname.err，位于data目录，此日志名可以用--log-error命令行选项更改
+-查询日志，可能很大，不应该长期使用，通常命名为hostname.log，位于data目录，此名字可以用--log命令行选项更改
+-二进制日志，通常命名为hostname-bin,位于data目录，此名字可以用--log-bin命令行选项更改
+-缓慢查询日志，执行缓慢的任何查询，通常命名为hostname-slow.log，位于data目录，可以使用--log-slow-queries命令行选项更改
+```
+
