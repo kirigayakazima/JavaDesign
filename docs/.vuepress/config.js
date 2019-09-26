@@ -32,12 +32,15 @@ module.exports = {
             '/DataBase/' : [
                 'DataBase01',
                 'DataBase02'
+            ],
+            '/DataConstructBase/' : [
+                'DataConstructBase01'
             ]
         },
         nav: [
             {text: '首页',link:'/'},
             {text: '数据库',link:'/DataBase/DataBase01'},
-            /*{text: '前端',link:''},*/
+            {text: '数据结构',link:'/DataConstructBase/DataConstructBase01'},
             {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
             {text: '关于',link:'/JavaBook/about'},
             {
