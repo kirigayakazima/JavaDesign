@@ -21,13 +21,13 @@ module.exports = {
                 'JavaDesign01'
             ],
             '/JavaBaseBook/': [
-                    'JavaBase01',
-                    'JavaBase02',
-                    'JavaBase03',
-                    'JavaBase04',
-                    'JavaBase05',
-                    'JavaBase06',
-                    'JavaBase07'
+                'JavaBase01',
+                'JavaBase02',
+                'JavaBase03',
+                'JavaBase04',
+                'JavaBase05',
+                'JavaBase06',
+                'JavaBase07'
                 ],
             '/DataBase/' : [
                 'DataBase01',
