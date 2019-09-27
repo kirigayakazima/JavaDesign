@@ -35,13 +35,21 @@ module.exports = {
             ],
             '/DataConstruct/' : [
                 'DataConstruct01'
+            ],
+            '/ServletBook/': [
+                'Servlet01'
             ]
         },
         nav: [
             {text: '首页',link:'/'},
             {text: '数据库',link:'/DataBase/DataBase01'},
             {text: '数据结构',link:'/DataConstruct/DataConstruct01'},
-            {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
+            {text: 'Java之路',
+                items:[
+                    {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
+                    {text: 'Servlet',link: '/ServletBook/Servlet01'}
+                ]
+            },
             {text: '关于',link:'/JavaBook/about'},
             {
                 text: '分享',
