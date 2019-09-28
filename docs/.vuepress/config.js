@@ -33,8 +33,8 @@ module.exports = {
                 'DataBase01',
                 'DataBase02'
             ],
-            '/DataConstruct/' : [
-                'DataConstruct01'
+            '/ConstBook/' : [
+                'Const01'
             ],
             '/ServletBook/': [
                 'Servlet01'
@@ -43,7 +43,7 @@ module.exports = {
         nav: [
             {text: '首页',link:'/'},
             {text: '数据库',link:'/DataBase/DataBase01'},
-            {text: '数据结构',link:'/DataConstruct/DataConstruct01'},
+            {text: '数据结构',link:'/ConstBook/Const01'},
             {text: 'Java之路',
                 items:[
                     {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
