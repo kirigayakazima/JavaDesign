@@ -84,3 +84,19 @@ SET CATALINA_HOME=(Tomcat解压后的目录)
 service方法是真正处理请求的方法
 destory方法是销毁时的方法
 ```
+```
+Service方法和doGet方法和doPost方法的区别
+    Service方法：可以处理get/post方式的请求，优先调用这个方法覆盖其他方法
+    doGet方法：
+        处理get请求的方法
+    doPost方法：
+        处理post请求的方法
+注意：
+    如果在覆写的service方法中，调用了父类的service方法，则service方法调用完后，会再次根据请求方式相应的doGet和doPost方法执行，所以一般情况下不在覆写的service方法中调用父类的service方法，避免出现405错误
+//这个方法会先调用父类的service方法，然后根据请求的不同去调用不同请求对应的方法
+super.service(rep,reqs)；
+
+
+
+```
+
