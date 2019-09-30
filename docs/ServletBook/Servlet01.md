@@ -71,3 +71,16 @@ SET CATALINA_HOME=(Tomcat解压后的目录)
     
 浏览器发送请求到服务器，服务器根据请求url地址中的url信息在webapps目录下找到对应的项目文件夹，然后在web.xml中检索对应的servlet，找到后调用并执行Servlet
 ```
+## 五、生命周期
+```
+-Servlet的生命周期
+        1.如果没有配置从第一次调用到服务器关闭
+        2.如果Servlet在web.xml中配置了load-on-startup，生命周期为服务器启动到服务器关闭
+        init方法是在Servlet进行初始化的一个方法，会在Servlet第一次加载进行存储时执行
+        destory方法是在servlet被销毁时执行，也就是服务器关闭时
+        
+        
+初始化方法，在servlet第一次加载内容的时候被调用
+service方法是真正处理请求的方法
+destory方法是销毁时的方法
+```
