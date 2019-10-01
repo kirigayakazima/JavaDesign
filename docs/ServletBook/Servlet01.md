@@ -96,7 +96,106 @@ Service方法和doGet方法和doPost方法的区别
 //这个方法会先调用父类的service方法，然后根据请求的不同去调用不同请求对应的方法
 super.service(rep,reqs)；
 
+```
+```
+Servlet的常见错误：
+    404错误：资源未找到
+        原因一：在请求地址中的servlet的别名书写错误
+        原因二：在虚拟项目名称拼写错误
+    500错误：内部服务器错误
+        错误一：
+            java.lang.ClassNotFoundException:com.bjsxt.servlet.ServletMothod
+            解决：
+              在web.xml中校验servlet类的全限定路径是否拼写错误
+        错误二：
+            因为service方法体的代码执行错误导致，逻辑错误
+            解决：
+                根据错误提示对service方法体中的代码进行修改
+    405错误：请求方式不支持
+        原因：
+            请求方式和servlet中的方法不匹配导致的
+        解决：
+            尽量使用service方法进行请求处理，不要使用service方法中调用父类的service方法
+```
+## 六、Request对象
+服务器接收到了浏览器的请求后，会创建一个Request对象，对象中存储了此次请求相关的请求数据，服务器在调用Servlet时会将创建的Request对象作为实参传递给Servlet的方法，比如：service方法
+```Java{2}
+request对象：
+        作用：request对象中封存了当前请求的所有请求信息
+        使用：获取请求头数据
+                req.getMethod();
+                req.getRequestURL();
+                req.getScheme();
+              获取请求行数据
+                req.getHeader("");
+                req.getHeaderNames();
+              获取用户数据   
+                req.getParameter("uname");
+        注意：
+              request对象由tomcat服务器创建，并作为实参传递给处理请求的servlet的service方法 
+``` 
 
-
+``` Java{2}  
+    //获取请求方式
+        String method=req.getMethod();
+		System.out.println(method);
+		//获取请求URL
+		StringBuffer url=req.getRequestURL();
+		System.out.println(url);
+		//获取请求URL
+		String uri=req.getRequestURI();
+		System.out.println(uri);
+		//获取请求协议
+		String h=req.getScheme();
+		System.out.println(h);
+		//获取请求行数据
+		
+		//获取指定的请求行信息
+		String value=req.getHeader("aaa");
+		//没有这个键，返回null
+		System.out.println(value);
+		
+		Enumeration e=req.getHeaderNames();
+		while (e.hasMoreElements()) {
+			String name=(String) e.nextElement();
+			String value2=req.getHeader(name);
+			System.out.println(name+""+value2);
+			
+		}
+		//获取用户数据
+		String name=req.getParameter("uname");
+		String pwd=req.getParameter("pwd");
+		System.out.println(name+""+pwd);
+		String[] favs=req.getParameterValues("fav");
+		if (favs!=null) {
+			for (String fav : favs) {
+				System.out.println(fav);
+			}
+		}
+		//获取所有的用户请求数据的键的枚举集合---req.getParameterName()
 ```
 
+```Java{2}
+Response对象：
+	    设置响应头
+ 		    setHeader(String name,String value);	//在响应头里面添加响应信息，但是同键会覆盖
+ 		    addHeader(String name,String value);	//在响应头里面添加响应信息，但是不会覆盖
+ 		设置响应状态
+ 			sendError(int num,String msg);			//自定义响应状态码
+ 		设置响应实体
+ 			resp.getWrite().write(String str);		//响应具体的数据给浏览器
+
+        //响应处理结果
+			//设置响应头
+			resp.setHeader("mouse", "1");
+			resp.setHeader("mouse", "2");
+			resp.addHeader("key", "3");
+			resp.addHeader("key", "4");
+			//设置响应编码格式,下面两种都可以
+			resp.setHeader("content-type", "text/html;charset=utf-8");
+			resp.setContentType("text/html;charset=utf-8");
+			//设置响应状态码
+			resp.sendError(405,"this is a error");
+			//设置响应实体,里面不能写中文
+			resp.getWriter().write("this is response study");
+```
