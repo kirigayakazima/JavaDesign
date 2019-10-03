@@ -199,3 +199,58 @@ Response对象：
 			//设置响应实体,里面不能写中文
 			resp.getWriter().write("this is response study");
 ```
+## 七、一个简单的登录页面的Demo(所有的Servlet样板)
+目录格式
+```
+src___com___bjsxt
+               |____dao
+               |     |____Impl
+               |     |       |____LoginDaoImpl.java
+               |     |       |
+               |     |       |____RegisterDaoImpl.java
+               |     |
+               |     |____LgoinDao.java       
+               |     |
+               |     |____RegisterDao.java
+               |
+               |____pojo
+               |      |____User.java
+               |
+               |
+               |
+               |
+               |
+               |
+               |____service
+               |     |____Impl
+               |     |       |____MethodServiceImpl.java
+               |     |       |
+               |     |       |____RegisterServiceImpl.java
+               |     |
+               |     |____MethodService.java     
+               |     |
+               |     |____RegisterService.java
+               |
+               |____servlet
+                     |____MethodServlet.java
+                     |
+                     |____RegisterServlet.java       
+                     |
+                     |____MyServlet.java
+
+WebRoot
+    |____Method.jsp
+    |
+    |____Register.jsp
+
+```
+具体实现<br>
+[代码链接](https://github.com/kirigayakazima/JavaDemo/tree/master/%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%9A%84%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E9%AA%8C%E8%AF%81%E9%80%BB%E8%BE%91)
+```
+1.判断u是否为null， 不为null，就能够成功注册或者登陆
+2.设置接口service和Dao
+3.具体实现都在Impl里面
+4.设置一个User,存放uanme，pwd，uid，数据准备和数据库里面的一样，方便存取
+5.在Dao接口的实现里面，进行数据库的操作，记得build path，添加jar包
+6.在Dao接口实现里面，注意的是，jdbc的操作，应该关闭流，返回结果应该是u，在设置注册账号的时候，应该注意的是判断账号没有注册后，应该进行账号的添加，然后进行账号的查找，赋给u，防止出现注册账号成功，但是页面显示的是failed。
+```
