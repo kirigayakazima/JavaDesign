@@ -71,7 +71,7 @@ SET CATALINA_HOME=(Tomcat解压后的目录)
     
 浏览器发送请求到服务器，服务器根据请求url地址中的url信息在webapps目录下找到对应的项目文件夹，然后在web.xml中检索对应的servlet，找到后调用并执行Servlet
 ```
-## 五、生命周期
+ ## 五、生命周期
 ```
 -Servlet的生命周期
         1.如果没有配置从第一次调用到服务器关闭
@@ -119,7 +119,7 @@ Servlet的常见错误：
 ```
 ## 六、Request对象
 服务器接收到了浏览器的请求后，会创建一个Request对象，对象中存储了此次请求相关的请求数据，服务器在调用Servlet时会将创建的Request对象作为实参传递给Servlet的方法，比如：service方法
-```Java{2}
+```
 request对象：
         作用：request对象中封存了当前请求的所有请求信息
         使用：获取请求头数据
@@ -135,8 +135,7 @@ request对象：
               request对象由tomcat服务器创建，并作为实参传递给处理请求的servlet的service方法 
 ``` 
 
-``` Java{2}  
-    //获取请求方式
+```   //获取请求方式
         String method=req.getMethod();
 		System.out.println(method);
 		//获取请求URL
@@ -175,7 +174,7 @@ request对象：
 		//获取所有的用户请求数据的键的枚举集合---req.getParameterName()
 ```
 
-```Java{2}
+```
 Response对象：
 	    设置响应头
  		    setHeader(String name,String value);	//在响应头里面添加响应信息，但是同键会覆盖
@@ -253,4 +252,95 @@ WebRoot
 4.设置一个User,存放uanme，pwd，uid，数据准备和数据库里面的一样，方便存取
 5.在Dao接口的实现里面，进行数据库的操作，记得build path，添加jar包
 6.在Dao接口实现里面，注意的是，jdbc的操作，应该关闭流，返回结果应该是u，在设置注册账号的时候，应该注意的是判断账号没有注册后，应该进行账号的添加，然后进行账号的查找，赋给u，防止出现注册账号成功，但是页面显示的是failed。
+```
+## 八、Servlet中的乱码问题
+ 1.使用String进行重新编码(建议使用这个)
+ ```
+ //把浏览器默认的格式转成utf-8的格式，万能格式，使用后可以在uname处填写中文进行注册
+ uname=new String(uname.getByte("iso8859-1"),"utf-8");
+ ```
+ 2.使用公共配置
+```
+post方式：
+    //设置请求编码格式
+    req.setCharacterEncoding("utf-8");
+get方式：
+    步骤一：
+            req.setCharacterEncoding("utf-8");
+    步骤二：
+            在tomcat服务器的目录下的conf文件下找到server.xml文件，打开进行如下配置
+        
+            <Connector port="8080" protocol="HTTP/1.1"
+                       ConnectionTimeOut="20000"
+                       redirectPort="8443" uerBodyEncodingForURI="true"/>
+                       
+Servlet流程总结：
+        浏览器发起请求到服务器(请求)
+        服务器接收浏览器的请求，进行解析，创建request对象处理请求数据
+        服务器调用对应的servlet进行请求处理，并将request对象作为实参传递给servlet方法
+        servlet的方法执行进行请求处理
+            //设置请求编码格式
+            //设置响应编码格式  
+            //获取请求信息
+            //处理请求信息
+                //创建业务层对象
+                //调用业务层对象的方法
+            //响应处理结果
+        数据流转流程
+            浏览器-->服务器-->数据库
+            浏览器<--服务器<--数据库
+
+```
+## 九、请求转发
+```
+//在响应处理结果的位置,path是相对路径，要转发的地址，例如Method.jsp
+req.getRequsetDispatcher(String path).forward(req.resp);
+//特点是一次请求，浏览器地址栏信息不变，请求转发后直接return即可
+```
+解决了一次请求内的不同servlet的数据的共享问题
+作用域：一次请求内
+特点：服务器创建，每次请求都会创建，生命周期一次请求
+```
+String str=(String)req.setAttribute("str");
+```
+使用请求转发会造成表单数据重复提交，解决办法是使用重定向
+## 十、重定向
+解决了表单重复提交的问题，以及当前servlet无法处理的请求问题
+```
+resp.sendRedirect(String path);
+path:本地路径为url
+     网络路径为资源路径
+特点：两次请求，两个request对象，浏览器地址栏信息改变
+时机:如果请求中有表单数据，而数据又比较重要，不能重复提交，建议使用重定向
+     如果请求被servlet接收后，无法从进行处理，建议使用重定向定位到可以处理的资源
+```
+## 十一、Cookie
+Cookie：解决了发送不同请求的数据共享问题<br>
+[cookie免登陆](https://github.com/kirigayakazima/JavaDemo/tree/master/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%A0%E4%B8%8Acookie%E5%85%8D%E7%99%BB%E9%99%86)
+```
+要使用cookie首先需要创建cookie对象
+Cookie c=new Cookie("mouse","thinkpad");
+resp.addCookie(c);
+//设置存储时长
+c.setMaxAge(3*24*3600);
+//设置有效路径
+c.setPath(String url);
+//Cookie信息的获取
+Cookie[] cks=req.getCookies();
+if(cks!=null){
+    for(Cookie ck:cks){
+        String name=ck.getName();
+        String value=ck.getValue();
+        System.out.println(name+":"+value);
+    
+}
+resp.getWriter().write("cookie学习");
+注意：
+    一个Cookie对象储存一条数据，多条数据，可以多创建几个cookie对象进行储存
+特点：
+    浏览器端的数据存储技术
+    存储的数据声明再服务器端
+    临时存储：存储在浏览器的运行内存中，浏览器关闭即失效
+    定时存储：设置了cookie的有效期，存储再客户端的硬盘里，在有效期内符合路径要求的请求都会附带该信息
+    默认cookie信息存储好后，每次请求都会附带，除非设置有效路径
 ```
