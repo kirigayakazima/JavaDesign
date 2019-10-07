@@ -344,3 +344,104 @@ resp.getWriter().write("cookie学习");
     定时存储：设置了cookie的有效期，存储再客户端的硬盘里，在有效期内符合路径要求的请求都会附带该信息
     默认cookie信息存储好后，每次请求都会附带，除非设置有效路径
 ```
+## 十二、Session
+```
+seesion原理：用户第一次访问服务器，服务器会创建一个seesion对象给此用户，并将该seesion对象的JSESSION使用cookie技术存储到浏览器中，保证用户的其他请求能够获取到同一个seesion对象，也保证了不同请求能够获取到的共享的数据
+特点：
+    存储在服务器端
+    服务器进行创建
+    依赖于cookie技术
+    一次会话
+作用：解决了一个用户不同请求处理的数据共享问题
+
+
+//创建seesion对象,既是创建session对象，也是查找，没有的时候就创建，有的时候就查找并且返回
+HttpSession hs=req.getSession();
+如果请求中有seesion标识符也就是JSESSIONID，那么就返回
+如果请求中没有，那么就创建新的seesion对象，将其JSESSIONID作为cookie数据存储在浏览器
+如果seesion对象失效了，也会重新创建一个session对象，并将其JSESSIONID存储在浏览器内存当中
+
+Seesion默认时间30分钟
+设置时间
+//设置生效时间，在5分钟内，一直在用会一直刷新时效，如果5分钟不用就会失效销毁
+hs.setMaxInactiveInterval(300);
+//设置强制失效
+hs.invalidate();
+//存储一个name的键，用法和cookie一样
+hs.setAttribute("name", name);
+///获取
+hs.getAttribute(name);
+//存储和获取能够在不同的请求当中，但是seesion必须相同，即浏览器没关闭
+
+
+seesion失效处理：
+    将用户请求中的JSESSIONID和后台获取到的JSESSIONID进行对比，如果一致则seesion没有失效，如果不一致则证明session失效了，重定向到登录页面，重新登陆
+使用时机：一般用户在登陆的时候，项目会将用户的个人信息存储到seesion中，供其他用户的其他请求调用
+注意：
+    JSESSIONID存储在cookie临时存储空间，浏览器关闭即失效
+```
+
+## 十三、ServletContext
+```
+解决了不同用户的数据共享问题
+一个项目只有一个 由服务器创建
+生命周期：从服务器启动到服务器关闭
+//创建servletcontext对象
+ServletContext sc=this.getServletContext(); 
+
+//获取ServletContext对象
+		//第一种方式
+		ServletContext sc=(ServletContext) this.getServletContext();
+		//第二种方式
+		ServletContext sc2=(ServletContext) this.getServletConfig().getServletContext();
+		//第三种方式
+		ServletContext sc3=(ServletContext) req.getSession().getServletContext();
+//数据存储和获取,用法和cookie一样
+sc.setAttribute("str","Servlet");
+sc.getAttribute("str");
+//不同的用户可以给ServletContext对象进行数据存取，获得的数据不存在就返回null
+
+获取项目web.xml里面的全局配置数据
+配置方式：注意一组<context-param>标签只能存储一组键值对数据，多组可以声明多个标签进行存储
+<context-param>
+    <param-name>name</param-name>
+    <param-value>xuaner</param-value>
+</context-param>
+作用：将静态数据和代码进行解耦
+//根据键返回值，如果数据不存在就返回null
+sc.getInitParameter(String name);
+//返回键名的枚举
+sc.getInitParameterNames(String name);
+
+//动态获取项目根目录下面资源
+		String path=sc.getRealPath("");
+		System.out.println(paths);
+//这个方法只能获取项目根目录下的资源流对象，class文件的流对象需要使用类加载器获取
+		InputStream isInputStream=sc.getResourceAsStream("");
+``` 
+## 十四、ServletConfig
+```
+作用：
+    ServletConfig对象是Servlet的专属配置对象,每个Servlet都拥有一个单独的ServletConfig对象，用来获取web.xml里面的配置信息
+使用：
+    获取ServletConfig对象
+    获取web.xml中的Servlet配置信息
+    
+//获取ServletConfig对象
+ServletConfig sc=this.getServletConfig();
+//获取web.xml配置
+String code=sc.getInitParameter("config");
+System.out.println(code);
+```
+## 十五、web.xml文件配置
+```
+全局上下文配置(全局配置参数)
+Servlet配置
+过滤器配置
+监听器配置
+web容器会按照ServletContext->context-param->listener->filter->servlet这个顺序加载 
+
+热部署
+热部署里面的添加的项目删掉后必须要把config里面的也删除
+<Context path="/Pet" reloadable="true" docBase="F:/PetWeb" />
+```
