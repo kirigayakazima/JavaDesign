@@ -37,7 +37,8 @@ module.exports = {
                 'Const01'
             ],
             '/ServletBook/': [
-                'Servlet01'
+                'Servlet01',
+                'JSP01'
             ]
         },
         nav: [
