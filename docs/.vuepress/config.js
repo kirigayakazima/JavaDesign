@@ -38,7 +38,8 @@ module.exports = {
             ],
             '/ServletBook/': [
                 'Servlet01',
-                'JSP01'
+                'JSP01',
+                'Ajax01'
             ]
         },
         nav: [
