@@ -40,7 +40,8 @@ module.exports = {
                 'Servlet01',
                 'JSP01',
                 'Ajax01',
-                'FilterAndListener'
+                'FilterAndListener',
+                'EI'
             ]
         },
         nav: [

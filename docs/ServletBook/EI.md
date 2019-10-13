@@ -54,3 +54,58 @@
                 ${cookie.键名.value}--->返回指定的cookie对象存储的数据的值
                     
 ```
+# JSTL标签库
+```
+作用：用来提升JSP页面的逻辑代码的编码效率
+
+    JSTL核心标签库
+        1.导入包
+        2.声明jstl标签库的引用 
+            <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        3.内容：
+             基本标签：
+                //输出给客户端
+                <c:out value="数据" default="默认值"></c:out>
+                
+                <c:set var="hello" value="world" scope="page"></c:set>
+                    作用：存储数据到作用域对象中
+                    var:存储键名
+                    value:存储键值
+                    scope:表示存储的作用域对象page request seesion application
+                <c:remove var="hello" scpoe="page" />
+                    作用：删除作用域的指定键的数据
+                    var：表示要删除的键名
+                    scope：表示要删除的作用域（可选）
+                    注意：
+                        如果不在作用域的情况使用该标签删除数据，会将四个作用域对象中的符合要求的数据全部删除
+                <c:if test="${表达式}">
+                        前端代码
+                </c:if>
+                    作用：进行逻辑判断，相当于java代码的分支判断
+                    注意：
+                        逻辑判断标签需要依赖于EI的逻辑运算，也就是表达式中涉及到的数据必须从作用域当中获取
+                <c:choose>
+                    <c:when test="">执行内容</c:when>
+                    <c:when test="">执行内容</c:when>
+                    <c:when test="">执行内容</c:when>
+                    ...
+                    <c:otherwise>执行内容</c:otherwise>
+                </c:choose>
+                    作用：用来进行多条件的逻辑判断，类似java的多分支语句
+                    注意：
+                        条件成立只会执行一次，都不成立则执行otherwise
+                <c:foreach begin="1" end="4" step="2" varStatus="vs">
+                    循环体
+                </c:foreach>
+                作用：
+                    循环内容进行处理
+                使用：
+                    begin：声明循环开始位置
+                    end：声明循环结束位置
+                    step：设置步长
+                    varStatus:声明vs变量记录每次循环的数据（角标，次数，是否是第一次或者最后一次循环）
+                    ${vs.index}--->${vs.count}--->${vs.first}--->${vs.last}
+                    items:声明要遍历的对象，结合EI表达式获取对象
+                    var：声明变量记录每次循环的结果，存储在作用域
+                    
+```
