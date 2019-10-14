@@ -42,6 +42,9 @@ module.exports = {
                 'Ajax01',
                 'FilterAndListener',
                 'EI'
+            ],
+            '/FrameBook/': [
+                'Mybatis01'
             ]
         },
         nav: [
@@ -51,7 +54,8 @@ module.exports = {
             {text: 'Java之路',
                 items:[
                     {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
-                    {text: 'Servlet',link: '/ServletBook/Servlet01'}
+                    {text: 'Servlet',link: '/ServletBook/Servlet01'},
+                    {text: '框架学习',link: '/FrameBook/Mybatis01'}
                 ]
             },
             {text: '关于',link:'/JavaBook/about'},
