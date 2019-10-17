@@ -156,3 +156,67 @@ Connection conn=ds.getConnection();
     Map<Object,object>map=session.selectMap("a.b.c","name123");
     System.out.println(map);
 ```
+### 七、目录组成
+```
+src____mybatis.xml
+|   |____com____qym
+|               |
+|               |
+|               |____mapper
+|               |       |________PeopleMapper.xml
+|               |
+|               |
+|               |____pojo
+|               |       |________People.java
+|               |
+|               |
+|               |____service
+|               |       |________PeopleService
+|               |       |
+|               |       |________Impl
+|               |                   |________PeopleServiceImpl
+|               |
+|               |____servlet
+|                       |________ShowServlet
+|
+|
+|
+|
+|
+|
+WebRoot______________main
+            |
+            |________index.jsp    
+
+
+
+
+
+
+
+
+
+
+```
+## 属性
+### 一、parameterType属性
+```
+1.在xxxMapper.xml中的<select><delete>等标签的parameterType可以控制参数类型
+
+2.SqlSession的selectList()和selectOne()的第二个参数和selectMap()的第三个参数都表示方法的参数
+---2.1示例：
+    People p=session.selectOne("a.b.selById",1);
+    System.out.println(p);
+---2.2在Mapper.xml中可以通过#{}获取参数,可以使用索引1可以使用#{parameter1}
+---#{0}和#{param 1}表示的含义相同，都是表示第一个参数
+---如果只有一个参数(基本数据类型或者String)，mybatis对#{}中的内容没有要求，只要写内容即可
+---如果参数对象#{属性名}，如果参数是map写成#{key}
+<select id="selById" resultType="com.qym.pojo.People" parameterType="int">
+    select * from people where id=#{0}
+</select>
+
+3.#{}和${}的区别（基本不用${}，面试相关）
+---3.1#{}获取参数的内容支持索引获取，param1获取指定位置参数，并且sql使用？占位符
+---3.2${}字符串拼接不使用？，默认找${内容}中的内容的get/set方法，如果写一个数字，那么就是一个数字
+
+```
