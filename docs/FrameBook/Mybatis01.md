@@ -220,3 +220,113 @@ WebRoot______________main
 ---3.2${}字符串拼接不使用？，默认找${内容}中的内容的get/set方法，如果写一个数字，那么就是一个数字
 
 ```
+### 二、实现分页
+```
+java代码
+//显示几个
+int pageSize=2;
+//第几页
+int pageNumber=2;
+//如果希望传递多个参数，可以使用对象或者map
+Map<String,Object> map=new HashMap<>();
+map.put("pageSize",pageSize);
+map.put("pageStart",pageSize*(pageNumber-1));
+List<People> p=session.selectList("a.b.page",map);
+```
+```
+在mapper.xml中代码
+<select id="page" resultType="com.qym.pojo.People" parameterType="map">
+    select * from people limit #{pageStart},#{pageSize}
+</select>
+```
+### 三、别名
+系统内置别名：把类型全小写
+```
+//把com.qym.pojo.People这个用别名peo替换，之后再mapper.xml中可以通过peo引用People类
+<typeAliases>
+    <typeAlias type="com.qym.pojo.People" alias="peo" />
+</typeAliases>
+
+
+//直接给某个包所有类起个别名，别名为类名，区分大小写
+<typeAliases>
+    <package name="com.qym.pojo" />
+</typeAliases>
+
+```
+## 实现新增和事务
+功能：从应用程序角度出发，软件具有哪些功能
+<br>业务：完成功能的逻辑，对应service中的一个方法
+<br>事务：从数据库角度出发，完成业务是需要执行的SQL集合，统称为一个事务
+<br>在mybatis中默认是关闭了JDBC的自动提交功能<br>
+```
+//提交事务
+session.commit();
+//自动提交
+openSession(true);
+setAutoCommit(true);
+```
+mybatis底层是对JDBC的封装
+```
+1.JDBC中的executeUpdate()执行新增，删除，修改的SQL返回值int，表示受影响的行数
+2.mybatis中<insert> <delete> <update> 标签没有resultType属性，认为返回值都是int 
+3.openSession()时Mybatis会创建一个SqlSession时同时创建一个Transaction(事务对象),同时autoCommit都为false
+4.在事务中如果出现异常，那么需要回滚数据，使用session().rellback();
+```
+
+*核心代码serviceImpl实现*
+```java{2}
+
+@Override
+	public PageInfo showAll(int pageSize, int pageNumber) throws IOException {
+		//获取资源
+		InputStream is=Resources.getResourceAsStream("mybatis.xml");
+		//拿到资源后进行建造者工厂模式生产
+		SqlSessionFactory factory=new SqlSessionFactoryBuilder().build(is);
+		//打开资源
+		SqlSession session=factory.openSession();
+		//开始进行资源利用
+		//创建一个map对象
+		//创建一个新的pojo对象，存储分页信息
+		PageInfo pi=new PageInfo();
+		pi.setPageSize(pageSize);
+		pi.setPageNumber(pageNumber);
+		
+		Map<String, Object> map=new HashMap<>();
+		map.put("pageStart", pageSize*(pageNumber-1));
+		map.put("pageSize", pageSize);
+		pi.setList(session.selectList("com.qym.mapper.FlowerMapper.selAll",map));
+		long count=session.selectOne("com.qym.mapper.FlowerMapper.selByPage");
+		pi.setTotal(count%pageSize==0?count/pageSize:count/pageSize+1);
+		return pi;
+	}
+```
+*核心代码servlet实现*
+```java{2}
+
+private FlowerService fs=new FlowerServiceImpl();
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		//先拿到size和number
+		//此处判断一下是否有size和number
+		String str1=req.getParameter("pageSize");
+		//给个默认值,每页显示3个
+		int pageSize=4;
+		if (str1!=null&&!str1.equals("")) {
+			pageSize=Integer.parseInt(str1);
+		}
+		
+		String str2=req.getParameter("pageNumber");
+		//给个默认值,一次显示一页
+		int pageNumber=1;
+		if (str2!=null&&!str2.equals("")) {
+			pageNumber=Integer.parseInt(str2);
+		}
+		
+		PageInfo pi=fs.showAll(pageSize, pageNumber);
+		System.out.println(pi);
+		req.setAttribute("pi", pi);
+		req.getRequestDispatcher("index.jsp").forward(req, resp);
+	}
+```
