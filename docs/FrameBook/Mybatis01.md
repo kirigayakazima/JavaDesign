@@ -330,3 +330,71 @@ private FlowerService fs=new FlowerServiceImpl();
 		req.getRequestDispatcher("index.jsp").forward(req, resp);
 	}
 ```
+## 接口绑定方案和多参数传递
+作用：实现创建一个接口后把mapper.xml由mybatis生成接口的实现类通过调用接口对象就可以获取到mapper.xml中编写的sql<br>
+
+*以后mybatis和spring整合的时候都是使用这个方案*
+### 一、实现步骤
+```
+-1.创建一个接口
+    --接口包名和接口名与mapper.xml中的namespace属性的属性值要相同
+    --在mybatis.xml中使用<package>标签进行扫描接口和mapper.xml
+    --接口中方法名和mapper.xml标签的id属性的属性值要相同
+```
+### 二、接口问题
+```
+mapper里面的接口被实例化了，需要给接口一个实例化对象，此处使用JDK的动态代理设计模式，面向接口的代理设计模式（必须要有接口）
+
+select标签里面，如果多参数的时候不需要写parameterType
+
+
+mapper包下面存放mapper.xml和mapper.java的接口
+
+public interface mapper{
+    //select标签里面的id必须是selAll了
+    List<People> selAll();
+    //Param表示可以使用字符串作为map的value 
+    List<People> selById(@Param("one") String name,@Param("two") String decs);
+}
+
+```
+代码实现步骤
+```
+---在mybatis.xml中的<mappers>下使用<package>
+
+    <mappers>
+        <package name="com.qym.mapper" />
+    </mappers>
+
+---在com.qym.mapper下新建接口
+    public interface PeopleMapper{
+        List<People> selAll();
+    }
+---在com.qym.mapper新建一个PeopleMapper.xml
+    ---namespace必须和接口是全限定路径（包名+类名）
+    ---id值必须和接口方法名相同
+    ---如果接口中方法为多个参数，可以省略parameterType
+        <mapper namespace="com.qym.mapper.PeopleMapper">
+            <select id="selAll" resultType="People">
+                select * from people
+            </select>
+        </mapper>
+---多参数实现办法
+    ---在接口中声明方法
+        list<People> seleById(String name,String desc);
+    ---在mapper.xml中添加
+        ---#{}中使用0,1,2或者param1,param2
+        <!-- 当多参数时，不需要写parameterType -->
+        <select id="seleById" resultType="People">
+            select * from people where desc=#{0} and name=#{1}
+        </select>
+---可以使用注解方式
+    ---在接口中声明方法
+        //mybatis把参数转换为map了，其中@Param("key")参数内容就是map的value
+        List<People> seleByOther(@Param("one") String on,@Param("two") String tw);
+    ---在mapper.xml中添加
+        ---在#{}里面写的@Param("内容")参数中内容
+        <select id="seleByOther" resultType="People">
+            select * from People where desc=#{one} and name=#{two}
+        </select>
+```
