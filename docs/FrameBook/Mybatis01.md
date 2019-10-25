@@ -398,3 +398,226 @@ public interface mapper{
             select * from People where desc=#{one} and name=#{two}
         </select>
 ```
+## 动态SQL
+在mapper.xml里面添加逻辑判断
+```
+---使用if标签
+<select>
+    select * from People where 1=1
+    <!-- OGNL表达式，直接写key或对象的属性，不需要添加任何特殊字符 -->
+    <if test="accin!=null and accin!=''">
+        and accin=#{accin}
+    </if>
+    <if test="accout!=null and accout!=''">
+        and accout=#{accout}
+    </if>
+</select>
+
+---使用where标签,去掉第一个and
+<select>
+    select * from People
+    <where>
+        <if test="accin!=null and accin!=''">
+            and accin=#{accin}
+        </if>
+        <if test="accout!=null and accout='">
+            and accout=#{accout}
+        </if>
+    </where>
+</select>
+
+---使用choose where when组合标签,只会执行一个
+<select>
+    select * from People
+    <where>
+        <choose>
+            <when test="accin!=null and accin!=''">
+            and accin=#{accin}
+            </when>
+            <when test="accout!=null and accout!=''">
+            and accout=#{accout}
+            </when>
+        </choose>
+    </where>
+</select>
+
+---使用set标签，去掉最后一个逗号，如果<set>里面有内容生成set关键字，没有就不生成
+    ---id=#{id}是为了防止<set>中没有内容，mybatis不生成set关键字
+    <update>
+        update People
+        <set>
+            id=#{id}
+             <if test="accin!=null and accin!=''">
+                and accin=#{accin}
+            </if>
+            <if test="accout!=null and accout='">
+                and accout=#{accout}
+            </if>
+        </set>
+    </update>
+    
+---使用trim标签
+    ---prefix 在前面添加内容
+    ---prefixOverrides 去掉前面内容
+    ---suffix 在后面添加内容
+    ---suffixOverrides 去掉后面内容
+<select>
+    select * from People
+    <trim prefix="where" prefixOverrides="and">
+</select>
+
+<update>
+    update People
+    <trim prefix="set" suffixOverrides=",">
+    a=a,
+    </trim>
+    where id=100
+</update>
+
+---使用bind标签，给参数重新赋值，场景：模糊查询、在原内容前或后添加内容
+<select>
+    <bind name="accin" value="'%'+accin+'%'">
+    #{id}
+</select>
+
+---使用foreach标签，循环参数内容，还具备在内容的前后添加内容，分隔符的功能，使用场景：in查询，批量新增中（mybatis中，foreach效率比较低）
+    ---如果希望批量新增，SQL命令
+    insert into People (default,1,2,3),(default,2,3,4)
+    ---openSession必须指定(底层是JDBC的PreparedStatement.addBatch();
+    factory.openSession(ExecutorType.BATCH);
+    
+    ---实例
+        collection 要遍历的集合
+        item 迭代变量 #{迭代变量名}获取内容
+        open 循环后左侧添加的内容
+        close 循环后右侧添加的内容
+        separator 每次循环时，元素之间的分隔符
+    <select id="" parameterType="" resultType="">
+        select * from People where id in
+        <foreach collection="" item="" open="(" close=")" separator=",">
+    </select>
+    
+---使用sql标签和include标签
+    ---某些sql片段如果希望复用，可以使用<sql>定义这个片段
+    <select>
+        select <include refid="mysql"></include>
+        from People
+    </select>
+    
+    <sql id="mysql">
+        id,accin,accout,money
+    </sql>
+    
+    ---在<select> <delete> <update> <insert>中使用<include>引用  
+    <select>
+        select <include refid="mysql"></include>
+        from People
+    </select>
+        
+```
+## 线程容器 ThreadLocal
+线程容器，给线程绑定一个Object内容后，只要线程不发生改变，可以随时取出object
+<br>
+改变线程，object就无法取出
+```
+//改变线程 
+final ThreadLocal<String> tl=new ThreadLoacl<>();
+tl.set("测试");
+new Thread(){
+    public void run(){
+        String result=tl.get();
+        System.out.println("结果："+result);
+    }
+}.start();
+```
+factory实例化过程是一个比较耗费性能的过程，尽量保证只有一个factory
+## 缓存
+应用程序和数据库交互的过程是一个相对比较耗时的过程
+<br>缓存存在的意义：让应用程序减少对数据库的访问，提升程序运行效率
+```
+Mybatis中默认开启SqlSession缓存
+    ---同一个SqlSession对象调用同一个<select>时，只有第一次访问数据库，第一次之后把查询结果缓存到SqlSession缓存区(内存)中
+    ---缓存的是statement对象
+        ---在mybatis中，一个<select>对应一个statement对象
+    ---有效范围必须是同一个SqlSession对象
+缓存流程
+    ---先去缓存区中找是否存在statement
+    ---返回结果
+    ---如果没有缓存statement对象，去数据库中获取数据
+    ---数据库返回查询结果
+    ---把查询结果放到对应的缓存区中
+SqlSessionFactory缓存
+    ---二级缓存
+    ---有效范围：同一个factory内那个SqlSession都可以获取
+    ---当数据很少被修改，经常被使用的时候使用二级缓存
+
+    ---在mapper.xml中添加
+    ---如果不写readOnly="true"，则需要把实体类系列化
+    <cache readOnly="true"></cache>
+    ---当SqlSession对象close()或commit()时，会把SqlSession缓存的数据刷(flush)到SqlSessionFactory的缓存区当中
+```
+## 实现多表查询
+```
+---实现多表查询方式
+    ---业务装配，对两个表编写表单查询语句，在业务把查询的两个结果进行关联
+    ---使用Auto Mapping特性，在实现两个表联合查询时通过别名完成映射
+    ---使用Myabtis的<resultMap>标签进行实现
+---多表查询时，类中包干另一个类的对象的分类
+    ---单个对象
+    ---集合对象
+
+```
+### resultMap标签
+```
+---resultMap标签写在mapper.xml中,由程序员控制SQL查询结果与实体类的映射关系
+    ---默认Mybatis使用Auto Mapping特性
+        ---使用<resultType>标签时,<select>标签不写 resultType属性，而是使用resultMap属性引用<resultMap>标签
+            ---mapper.xml配置
+                <resultMap type="teacher" id="mymap">
+                //主键使用 id 标签配置映射关系
+                <id column="id" property="id1" />
+                //其他列使用 result 标签配置映射关系
+                <result column="name" property="name1"/>
+                </resultMap>
+                <select id="selAll" resultMap="mymap">
+                    select * from teacher
+                </select>
+                
+---使用resultMap实现关联单个对象(N+1)方式
+    ---N+1查询方式，先查询出某个表的全部信息，根据这个表的信息查询到另一个表的信息
+    ---与业务员装配的区别
+        ---在service里面写的代码现在由mybatis装配
+    ---实现步骤
+        ---在主类Student中添加一个Teacher对象
+        ---在Teacher.xml中提供一个查询
+            <select id="selById" resultType="teacher" parameterType="int">
+                select * from teacher where id=#{0}
+            </select>
+        ---在StudentMapper中做以下配置
+            ---<association>装配一个对象时使用
+            ---property:Teacher对象在Student类中的属性名
+            ---select:通过那个查询来查询出这个对象的信息
+            ---column:把当前表的那个列的值作为参数传递给另一个查询
+            ---大前提使用N+1方式时如果列名和属性名相同可以不配置，但是不会返回对应的值，使用Auto mapping特性，但是mybatis默认只会给列专配一次
+                <resultMap type="student" id="stuMap">
+                    <id property="id" column="id"/>
+                    <result property="name" column="name"/>
+                    <result property="age" column="age"/>
+                    <result property="tid" column="tid"/>
+                    //如果关联一个对象
+                    <association property="teacher" select="com.bjsxt.mapper.TeacherMapper.selById" column="tid"></association>
+                </resultMap>
+                <select id="selAll" resultMap="stuMap">
+                    select * from student
+                </select>
+                
+            //简化后得到
+                <resultMap type="student" id="stuMap">
+                    <result column="tid" property="tid"/>
+                    // 如果关联一个对象
+                    <association property="teacher" select="com.bjsxt.mapper.TeacherMapper.selById" column="tid"></association>
+                </resultMap>
+                <select id="selAll" resultMap="stuMap">
+                    select * from student
+                </select>
+```
