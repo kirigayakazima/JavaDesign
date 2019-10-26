@@ -620,4 +620,169 @@ SqlSessionFactory缓存
                 <select id="selAll" resultMap="stuMap">
                     select * from student
                 </select>
+        
+        ---使用resultMap实现关联单个对象(联合查询方式)
+            ---只需要编写一个 SQL,在 StudentMapper 中添加下面效果
+            --- <association/>只要专配一个对象就用这个标签
+            --- 此时把<association/>小的<resultMap>看待
+            --- javaType 属性:<association/>专配完后返回一个什么类型的对象.取值是一个类(或类的别名)
+            <resultMap type="Student" id="stuMap1">
+                <id column="sid" property="id"/>
+                <result column="sname" property="name"/>
+                <result column="age" property="age"/>
+                <result column="tid" property="tid"/>
+                <association property="teacher" javaType="Teacher" >
+                <id column="tid" property="id"/>
+                <result column="tname" property="name"/>
+                </association>
+            </resultMap>
+            <select id="selAll1" resultMap="stuMap1">
+                 select s.id sid,s.name sname,age age,t.itid,t.name tname FROM student s left outer join teacher t on s.tid=t.id
+            </select>
+            
+        --- N+1 方式和联合查询方式对比
+            --- N+1:需求不确定时6.2 联合查询:需求中确定查询时两个表一定都查询.
+        ---N+1 名称由来
+            --- 举例:学生中有 3 条数据
+            --- 需求:查询所有学生信息级授课老师信息
+            --- 需要执行的 SQL 命令
+            --- 查询全部学生信息:select * from 学7.3.2 执行 3 遍 select * from 老师 where id=学生的外键
+            --- 使用多条 SQl 命令查询两表数据时,如果希望把需要的数据都 查询出来,需要执行 N+1 条 SQl 才能把所有数据库查询出来
+            ---缺点:效率低
+            --- 优点: 如果有的时候不需要查询学生是同时查询老师.只需执行一个 select * from student;
+            --- 适用场景: 有的时候需要查询学生同时查询老师,有的时候只需要查询学生.
+            ---如果解决 N+1 查询带来的效率低的问题
+            --- 默认带的前提: 每次都是两个都查询 使用两表联合查询.
+
+
+---使用<resultMap>查询关联集合对象(N+1)
+    ---在 Teacher 中添加 List<Student>
+        public class Teacher {
+        private int id;
+        private String name;
+        private List<Student> list;
+    --- 在 StudentMapper.xml 中添加通过 tid 查询
+        <select id="selByTid" parameterType="int"resultType="student">
+            select * from student where tid=#{0}
+        </select>
+    ---在 TeacherMapper.xml 中添加查询全部
+        ---<collection/> 当属性是集合类型时使用的标签. 
+            <resultMap type="teacher" id="mymap">
+                <id column="id" property="id"/>
+                <result column="name" property="name"/>
+                <collection property="list"
+                select="com.bjsxt.mapper.StudentMapper.selByTid"
+                column="id"></collection>
+            </resultMap>
+            <select id="selAll" resultMap="mymap">
+                select * from teacher
+            </select>
+---使用<resultMap>实现加载集合数据(联合查询方式)
+    ---在 teacherMapper.xml 中添加
+        ---mybatis 可以通过主键判断对象是否被加载过 
+        --- 不需要担心创建重复 Teacher
+            <resultMap type="teacher" id="mymap1">
+                <id column="tid" property="id"/>
+                <result column="tname" property="name"/>
+                <collection property="list" ofType="student" >
+                    <id column="sid" property="id"/>
+                    <result column="sname" property="name"/>
+                    <result column="age" property="age"/>
+                    <result column="tid" property="tid"/>
+                </collection>
+            </resultMap>
+            <select id="selAll1" resultMap="mymap1">
+                select t.id tid,t.name tname,s.id sid,s.namsname,age,tid from teacher t LEFT JOIN student s on t.id=s.tid;
+            </select>
+---使用 Auto Mapping 结合别名实现多表查询
+    --- 只能使用多表联合查询方式. 5.2 要求:查询出的列别和属性名相同. 5.3 实现方式
+        ---在 SQL 是关键字符,两侧添加反单引号
+            <select id="selAll" resultType="student">
+                select t.id `teacher.id`,t.name `teacher.name`,s.id id,s.name name,age,tid from student s LEFT JOIN teacher t on t.id=s.tid
+            </select>
+```     
+### MyBatis 注解
+```
+---MyBatis 注解
+    ---注解:为了简化配置文件. 
+    ---Mybatis 的注解简化 mapper.xml 文件
+        ---如果涉及动态 SQL 依然使用 mapper.xml
+    ---mapper.xml 和注解可以共存. 
+    ---使用注解时 mybatis.xml 中<mappers>使用
+        ---<package/>
+        ---<mapper class=””/>
+---实现查询
+    @Select("select * from teacher")
+    List<Teacher> selAll();
+---实现新增
+    @Insert("insert into teacher
+    values(default,#{name})")
+    int insTeacher(Teacher teacher);
+---实现修改
+    @Update("update teacher set name=#{name} where id=#{id}")
+    int updTeacher(Teacher teacher);
+---实现删除
+    @Delete("delete from teacher where id=#{0}")
+    int delById(int id);
+---使用注解实现<resultMap>功能
+    ---以 N+1 举例
+        ---在 StudentMapper 接口添加查询
+            @Select("select * from student where tid=#{0}")
+            List<Student> selByTid(int tid);
+        ---在 TeacherMapper 接口添加
+        ---@Results() 相当于<resultMap>
+        ---@Result() 相当于<id/>或<result/>
+        ---@Result(id=true) 相当与<id/>
+        ---@Many() 相当于<collection/>
+    ---@One() 相当于<association/>
+        @Results(value={
+        @Result(id=true,property="id",column="id"),
+        @Result(property="name",column="name"),
+        @Result(property="list",column="id",many=@Many(select="com.bjsxt.mapper.StudentMapper.selByTid"))
+        })
+        @Select("select * from teacher")
+        List<Teacher> selTeacher();
+```
+### 运行原理
+```
+---运行过程中涉及到的类
+    ---Resources MyBatis 中 IO 流的工具类
+    ---加载配置文件
+    ---SqlSessionFactoryBuilder() 构建器
+        ---作用:创建 SqlSessionFactory 接口的实现类
+    ---XMLConfigBuilder MyBatis全局配置文件内容构建器类
+        ---作用负责读取流内容并转换为 JAVA 代码. 
+    --- Configuration 封装了全局配置文件所有配置信息       ---全局配置文件内容存放在 Configuration 中
+    ---DefaultSqlSessionFactory是SqlSessionFactory接扣的实现类
+    ---Transaction 事务类
+        ---每一个 SqlSession 会带有一个 Transaction 对象. 
+    ---TransactionFactory 事务工厂
+        ---负责生产 Transaction
+    --- Executor MyBatis 执行器
+        --- 作用:负责执行 SQL 命令
+        --- 相当于 JDBC 中 statement 对象(或PreparedStatement或 CallableStatement)
+        --- 默认的执行器 SimpleExcutor
+        --- 批量操作 BatchExcutor
+        --- 通过 openSession(参数控制)
+    --- DefaultSqlSession 是 SqlSession 接口的实现类
+    ---ExceptionFactory MyBatis 中异常工厂
+```
+
+流程
+
+![image.png](https://i.loli.net/2019/10/26/5kwdHpFgQOKzhIn.png)
+
+```
+解释
+---在 MyBatis 运行开始时需要先通过 Resources加载全局配置文件.
+---下面需要实例化 SqlSessionFactoryBuilder 构建器
+---帮助 SqlSessionFactory接口实现类DefaultSqlSessionFactory.
+---在实例化 DefaultSqlSessionFactory之前需要先创建XmlConfigBuilder解析全局配置文件流,并把解析结果存放在 Configuration 中.
+---之后把Configuratin传递给 DefaultSqlSessionFactory.
+---到此 SqlSessionFactory 工厂创建成功.
+---由 SqlSessionFactory 工厂创建 SqlSession. 每次创建 SqlSession 时,都需要由 TransactionFactory创建Transaction对象,同时还需要创建 SqlSession 的执行器 Excutor,最后实例化DefaultSqlSession,传递给 SqlSession 接口. 
+---根据项目需求使用 SqlSession 接口中的 API完成具体的事务操作.
+---如果事务执行失败,需要进行rollback 回滚事务.
+---如果事务执行成功提交给数据库.
+---关闭 SqlSession
 ```
