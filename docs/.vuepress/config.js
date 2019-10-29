@@ -45,7 +45,8 @@ module.exports = {
             ],
             '/FrameBook/': [
                 'Mybatis01',
-                'Log4j'
+                'Log4j',
+                'Spring01'
             ]
         },
         nav: [
