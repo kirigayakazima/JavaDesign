@@ -1,12 +1,12 @@
 # Spring
-```
+```Java{2}
 IoC/DI          控制反转/依赖注入
 AOP             面向切面编程
 声明式事务
 ```
 ### Spring框架runtime
-```
-test:spring提供测试功能
+```Java{2}
+test:Spring提供测试功能
 Core Container:核心容器，Spring启动最基本条件
     ---Beans:Spring负责创建类对象并管理对象
     ---Core:核心类
@@ -22,7 +22,7 @@ WEB:需要Spring完成web相关功能时需要
     ===tomcat加载spring配置文件时需要有spring-web包
 ```
 ## IoC和DI
-```
+```Java{2}
 applicactionContext.xml配置的信息最终存储到了Spring容器ApplicationContext中 
 ```
 ### xml文件配置
@@ -36,7 +36,7 @@ name：参数名
 type：类型(区分关键字和封装类int和Integer)
 #### 创建对象的三种方法
 构造方法创建
-```
+```Xml{2}
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -53,14 +53,14 @@ type：类型(区分关键字和封装类int和Integer)
 实例工厂
 
 创建一个工厂，添加一个newInstance的方法方法返回一个People对象
-```
+```Java{2}
 public static People newInstance(){
 		return new People();
 	}
 ```
 
 xml配置
-```
+```Xml{2}
 <bean id="factory" class="com.qym.pojo.PeopleFactory"></bean>
 <bean id="peo1" factory-bean="factory" factory-method="newInstance"></bean>
 ```
@@ -69,12 +69,12 @@ xml配置
 创建一个工厂，添加一个newInstance的静态方法方法返回一个People对象
 
 xml配置
-```
+```Xml{2}
 <bean id="peo2" class="com.qym.pojo.PeopleFactory" factory-method="newInstance"></bean>
 ```
 ## 给Bean属性赋值
 ### 属性是基本数据类型或String等简单类型
-```
+```Xml{2}
 <bean id="peo" class="com.qym.pojo.People">
     <property name="id" value="222"></property>
     <property name="name" value="玄儿"></property>
@@ -91,7 +91,7 @@ xml配置
 </bean>
 ```
 ### 属性是Set<?> List<?> 数组
-```
+```Xml{2}
 <!--Set<?>-->
 <bean id="peo" class="com.qym.pojo.People">
     <property name="sets">
@@ -135,7 +135,7 @@ xml配置
 </bean>
 ```
 ### 属性是map
-```
+```Xml{2}
 <bean id="peo" class="com.qym.pojo.People">
     <property name="map">
         <map>
@@ -146,7 +146,7 @@ xml配置
 </bean>
 ```
 ### 属性是Properties类型
-```
+```Xml{2}
 <bean id="peo" class="com.qym.pojo.People">
     <property name="demo">
         <props>
@@ -159,7 +159,7 @@ xml配置
 
 ## DI
 DI和IoC类似，当一个类需要依赖另一个类对象时，把B赋值给A的过程叫做依赖注入
-```
+```Xml{2}
 <bean id="peo" class="com.qym.pojo.People">
     <property name="desk" ref="desk"></property>
 </bean>
@@ -174,7 +174,7 @@ DI和IoC类似，当一个类需要依赖另一个类对象时，把B赋值给A�
 
 ![I1_CRT92_RDN6XYE69PM_6J.png](https://i.loli.net/2019/10/30/IQ7Jw5rzo1keEZs.png)
 ### xml配置文件
-```
+```Xml{2}
 <!--数据源封装类，数据源：获取数据库连接，spring-jdbc.jar包中-->
 <bean id="dataSour" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -213,7 +213,7 @@ DI和IoC类似，当一个类需要依赖另一个类对象时，把B赋值给A�
 [源码](https://github.com/kirigayakazima/JavaDemo/tree/master/spring%E6%95%B4%E5%90%88mybatis%E6%9C%89%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%99%BB%E5%BD%95)
 
 ### 验证码Servlet
-```
+```Java{2}
 private UserService userService;
 	@Override
 	public void init() throws ServletException {
@@ -250,9 +250,8 @@ private UserService userService;
 		}
 ```
 
-
 ### 登录Servlet
-```
+```Java{2}
 private UserService userService;
 	@Override
 	public void init() throws ServletException {
