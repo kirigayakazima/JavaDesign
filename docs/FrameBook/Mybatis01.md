@@ -30,7 +30,7 @@ slf4j-api|日志包
 slf4j-log4j12|日志包
 ### 二、配置xml文件
 在src路径下配置一个xml文件，必须添加
-```
+```Xml{2}
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
@@ -55,7 +55,7 @@ slf4j-log4j12|日志包
 </configuration>
 ```
 然后在mapper目录下新建一个xml，配置编写sql语句
-```
+```Xml{2}
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -72,7 +72,7 @@ slf4j-log4j12|日志包
     </select>
 </mapper>
 ```
-```
+```Java{2}
 工厂模式
 InputStream is =Resources.getResourceAsStream("mybatis.xml");
 //使用工厂设计模式
@@ -92,7 +92,7 @@ window-->preference-->XML-->XML catalog-->add按钮添加本地dtd文件
 <br>
 mybatis的优点，不用编写实现类，只需要写sql语句
 ### 四、全局配置文件
-```
+```Java{2}
 1.全局配置文件中内容
     1.1 <transactionManager/>type属性可取值
             1.1.1  JDBC,事务管理使用JDBC原生事务管理方式
@@ -109,7 +109,7 @@ mybatis的优点，不用编写实现类，只需要写sql语句
 <br>ldle空间状态：等待应用程序使用
 <br>4.使用数据库连接池的目的：在高频率访问数据库时，使用数据库连接池可以降低服务器系统压力，提升程序运行效果<br>小型项目不适用数据库连接池
 <br>5.实现JDBC tomcat Pool数据库连接池的步骤
-```
+```Xml{2}
 1.在web项目中的META-INF中存放context.xml
 
 <context>
@@ -133,14 +133,14 @@ mybatis的优点，不用编写实现类，只需要写sql语句
 <br>6.可以在java中使用indi获取数据库连接池中的对象
 <br>Context：上下文接口，context.xml文件对象类型
 <br>代码：
-```
+```Java{2}
 Context cxt=new InitialContext();
 DataSource ds=(DataSource) cxt.looup("java:comp/env/test");
 Connection conn=ds.getConnection();
 ```
 <br>当关闭连接对象时，把连接对象归还给数据库连接池，把状态改变成IdIe
 ### 六、三种查询方式
-```
+```Java{2}
 1.selectList()返回值为List<resultType 属性控制>
     适用于查询结果都需要遍历的需求
     List<Flowers> list=session.selectList("a.b.selAll");
@@ -157,7 +157,7 @@ Connection conn=ds.getConnection();
     System.out.println(map);
 ```
 ### 七、目录组成
-```
+```Java{2}
 src____mybatis.xml
 |   |____com____qym
 |               |
@@ -200,7 +200,7 @@ WebRoot______________main
 ```
 ## 属性
 ### 一、parameterType属性
-```
+```Java{2}
 1.在xxxMapper.xml中的<select><delete>等标签的parameterType可以控制参数类型
 
 2.SqlSession的selectList()和selectOne()的第二个参数和selectMap()的第三个参数都表示方法的参数
@@ -221,7 +221,7 @@ WebRoot______________main
 
 ```
 ### 二、实现分页
-```
+```Java{2}
 java代码
 //显示几个
 int pageSize=2;
@@ -233,7 +233,7 @@ map.put("pageSize",pageSize);
 map.put("pageStart",pageSize*(pageNumber-1));
 List<People> p=session.selectList("a.b.page",map);
 ```
-```
+```Xml{2}
 在mapper.xml中代码
 <select id="page" resultType="com.qym.pojo.People" parameterType="map">
     select * from people limit #{pageStart},#{pageSize}
@@ -241,7 +241,7 @@ List<People> p=session.selectList("a.b.page",map);
 ```
 ### 三、别名
 系统内置别名：把类型全小写
-```
+```Xml{2}
 //把com.qym.pojo.People这个用别名peo替换，之后再mapper.xml中可以通过peo引用People类
 <typeAliases>
     <typeAlias type="com.qym.pojo.People" alias="peo" />
@@ -259,7 +259,7 @@ List<People> p=session.selectList("a.b.page",map);
 <br>业务：完成功能的逻辑，对应service中的一个方法
 <br>事务：从数据库角度出发，完成业务是需要执行的SQL集合，统称为一个事务
 <br>在mybatis中默认是关闭了JDBC的自动提交功能<br>
-```
+```Java{2}
 //提交事务
 session.commit();
 //自动提交
@@ -267,7 +267,7 @@ openSession(true);
 setAutoCommit(true);
 ```
 mybatis底层是对JDBC的封装
-```
+```Xml{2}
 1.JDBC中的executeUpdate()执行新增，删除，修改的SQL返回值int，表示受影响的行数
 2.mybatis中<insert> <delete> <update> 标签没有resultType属性，认为返回值都是int 
 3.openSession()时Mybatis会创建一个SqlSession时同时创建一个Transaction(事务对象),同时autoCommit都为false
@@ -335,14 +335,14 @@ private FlowerService fs=new FlowerServiceImpl();
 
 *以后mybatis和spring整合的时候都是使用这个方案*
 ### 一、实现步骤
-```
+```Java{2}
 -1.创建一个接口
     --接口包名和接口名与mapper.xml中的namespace属性的属性值要相同
     --在mybatis.xml中使用<package>标签进行扫描接口和mapper.xml
     --接口中方法名和mapper.xml标签的id属性的属性值要相同
 ```
 ### 二、接口问题
-```
+```Java{2}
 mapper里面的接口被实例化了，需要给接口一个实例化对象，此处使用JDK的动态代理设计模式，面向接口的代理设计模式（必须要有接口）
 
 select标签里面，如果多参数的时候不需要写parameterType
@@ -359,7 +359,7 @@ public interface mapper{
 
 ```
 代码实现步骤
-```
+```Xml{2}
 ---在mybatis.xml中的<mappers>下使用<package>
 
     <mappers>
@@ -400,7 +400,7 @@ public interface mapper{
 ```
 ## 动态SQL
 在mapper.xml里面添加逻辑判断
-```
+```Xml{2}
 ---使用if标签
 <select>
     select * from People where 1=1
@@ -519,7 +519,7 @@ public interface mapper{
 线程容器，给线程绑定一个Object内容后，只要线程不发生改变，可以随时取出object
 <br>
 改变线程，object就无法取出
-```
+```Java{2}
 //改变线程 
 final ThreadLocal<String> tl=new ThreadLoacl<>();
 tl.set("测试");
@@ -534,7 +534,7 @@ factory实例化过程是一个比较耗费性能的过程，尽量保证只有�
 ## 缓存
 应用程序和数据库交互的过程是一个相对比较耗时的过程
 <br>缓存存在的意义：让应用程序减少对数据库的访问，提升程序运行效率
-```
+```Java{2}
 Mybatis中默认开启SqlSession缓存
     ---同一个SqlSession对象调用同一个<select>时，只有第一次访问数据库，第一次之后把查询结果缓存到SqlSession缓存区(内存)中
     ---缓存的是statement对象
@@ -568,7 +568,7 @@ SqlSessionFactory缓存
 
 ```
 ### resultMap标签
-```
+```Xml{2}
 ---resultMap标签写在mapper.xml中,由程序员控制SQL查询结果与实体类的映射关系
     ---默认Mybatis使用Auto Mapping特性
         ---使用<resultType>标签时,<select>标签不写 resultType属性，而是使用resultMap属性引用<resultMap>标签
@@ -702,7 +702,7 @@ SqlSessionFactory缓存
             </select>
 ```     
 ### MyBatis 注解
-```
+```Java{2}
 ---MyBatis 注解
     ---注解:为了简化配置文件. 
     ---Mybatis 的注解简化 mapper.xml 文件
@@ -744,7 +744,7 @@ SqlSessionFactory缓存
         List<Teacher> selTeacher();
 ```
 ### 运行原理
-```
+```Java{2}
 ---运行过程中涉及到的类
     ---Resources MyBatis 中 IO 流的工具类
     ---加载配置文件
@@ -772,7 +772,7 @@ SqlSessionFactory缓存
 
 ![image.png](https://i.loli.net/2019/10/26/5kwdHpFgQOKzhIn.png)
 
-```
+```Java{2}
 解释
 ---在 MyBatis 运行开始时需要先通过 Resources加载全局配置文件.
 ---下面需要实例化 SqlSessionFactoryBuilder 构建器
