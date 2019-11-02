@@ -169,3 +169,124 @@ DI和IoC类似，当一个类需要依赖另一个类对象时，把B赋值给A�
     <property name="price value="2"></property>
 </bean>
 ```
+## Spring整合Mybatis
+### 依赖
+
+![I1_CRT92_RDN6XYE69PM_6J.png](https://i.loli.net/2019/10/30/IQ7Jw5rzo1keEZs.png)
+### xml配置文件
+```
+<!--数据源封装类，数据源：获取数据库连接，spring-jdbc.jar包中-->
+<bean id="dataSour" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+    <property name="url" value="jdbc:mysql://localhost:3306/408"></property>
+    <property name="username" value="root"></property>
+    <property name="password" value="123456"></property>
+</bean>
+<!--把SqlSessionFactory工厂创建，并且注入mysql连接-->
+<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--数据库连接信息来源于dataSource-->
+    <property name="dataSource" ref="dataSour"></property>
+</bean>
+<!--此时连接已经创建，并且工厂创建完毕-->
+<!--扫描器相当于mybatis.xml中的mappers标签下的package标签,扫描com.qym.mapper包后会给对应接口创建对象-->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <!--要扫描那个包-->
+    <property name="basePackage" value="com.qym.mapper"></property>
+    <!--这里要让扫描和factory产生关联，把factory注入，让factory存到扫描的所有资源-->
+    <property name="sqlSessionFactory" ref="factory"></property>
+</bean>
+<!--由spring管理service实现类-->
+<bean id="airService" class="com.qym.service.impl.AirServiceImpl">
+    <!--这里的airMapper是mapper下的注解，注入airMapper注解-->
+    <property name="airMapper" ref="airMapper"></property>
+</bean>
+```
+### 代码编写
+```
+---pojo不变
+---mapper包下必须使用接口绑定方案或者注解方案（必须有接口）
+---Service接口和Service实现类不变
+    ---需要在Service实现类中声明Mapper接口对象，并生成get/set方法
+---Spring无法管理Servlet
+```
+## spring初步整合Mybatis实现简单登录验证
+[源码](https://github.com/kirigayakazima/JavaDemo/tree/master/spring%E6%95%B4%E5%90%88mybatis%E6%9C%89%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%99%BB%E5%BD%95)
+<details>
+<summary><span style="font-size:18px">验证码Servlet<span></summary>
+<pre><code>
+private UserService userService;
+	@Override
+	public void init() throws ServletException {
+		ApplicationContext ac= (ApplicationContext) WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		userService=ac.getBean("userService",UserServiceImpl.class);
+	}
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		req.setCharacterEncoding("utf-8");
+		String code=req.getParameter("code");
+		String codeSession=req.getSession().getAttribute("code").toString();
+		if(codeSession.equals(code)){
+			String username=req.getParameter("username");
+			String password=req.getParameter("password");
+			User user=new User();
+			user.setUsername(username);
+			user.setPassword(password);
+			User user1=null;
+			user1=userService.login(user);
+			if (user1!=null) {
+				System.out.println("登陆成功了");
+				resp.sendRedirect("main.jsp");
+			}else {
+				System.out.println("用户名错误");
+				req.setAttribute("error", "用户名或者密码不正确");
+				req.getRequestDispatcher("index.jsp").forward(req, resp);
+			}
+		}else {
+			System.out.println("验证码错误");
+			req.setAttribute("error", "验证码错误");
+			req.getRequestDispatcher("index.jsp").forward(req, resp);
+			}
+		}
+</code></pre>
+</details>
+
+<details>
+<summary><span style="font-size:18px">登录Servlet<span></summary>
+<pre><code>
+private UserService userService;
+	@Override
+	public void init() throws ServletException {
+		ApplicationContext ac= (ApplicationContext) WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		userService=ac.getBean("userService",UserServiceImpl.class);
+	}
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		req.setCharacterEncoding("utf-8");
+		String code=req.getParameter("code");
+		String codeSession=req.getSession().getAttribute("code").toString();
+		if(codeSession.equals(code)){
+			String username=req.getParameter("username");
+			String password=req.getParameter("password");
+			User user=new User();
+			user.setUsername(username);
+			user.setPassword(password);
+			User user1=null;
+			user1=userService.login(user);
+			if (user1!=null) {
+				System.out.println("登陆成功了");
+				resp.sendRedirect("main.jsp");
+			}else {
+				System.out.println("用户名错误");
+				req.setAttribute("error", "用户名或者密码不正确");
+				req.getRequestDispatcher("index.jsp").forward(req, resp);
+			}
+		}else {
+			System.out.println("验证码错误");
+			req.setAttribute("error", "验证码错误");
+			req.getRequestDispatcher("index.jsp").forward(req, resp);
+			}
+		}
+</code></pre>
+</details>
