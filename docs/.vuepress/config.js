@@ -47,6 +47,9 @@ module.exports = {
                 'Mybatis01',
                 'Log4j',
                 'Spring01'
+            ],
+            '/SpringBootBook/':[
+                'SpringBoot01'
             ]
         },
         nav: [
@@ -57,7 +60,8 @@ module.exports = {
                 items:[
                     {text: 'Java基础',link:'/JavaBaseBook/JavaBase01'},
                     {text: 'Servlet',link: '/ServletBook/Servlet01'},
-                    {text: '框架学习',link: '/FrameBook/Mybatis01'}
+                    {text: '框架学习',link: '/FrameBook/Mybatis01'},
+                    {text: 'Spring Boot',link: '/SpringBootBook/SpringBoot01'}
                 ]
             },
             {text: '关于',link:'/JavaBook/about'},
