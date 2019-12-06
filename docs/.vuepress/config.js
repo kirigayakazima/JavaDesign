@@ -49,7 +49,8 @@ module.exports = {
                 'Spring01'
             ],
             '/SpringBootBook/':[
-                'SpringBoot01'
+                'SpringBoot01',
+                'SpringBoot02'
             ]
         },
         nav: [
