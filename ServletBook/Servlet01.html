@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Servlet | Java设计模式解读</title>
+    <meta name="description" content="一个Java学习者的践行之路">
+    <link rel="icon" href="/JavaDesign/logo1.jpg">
+    
+    <link rel="preload" href="/JavaDesign/assets/css/0.styles.c0030725.css" as="style"><link rel="preload" href="/JavaDesign/assets/js/app.e7717cda.js" as="script"><link rel="preload" href="/JavaDesign/assets/js/2.1544abce.js" as="script"><link rel="preload" href="/JavaDesign/assets/js/26.9cdd79f3.js" as="script"><link rel="prefetch" href="/JavaDesign/assets/js/10.6cb91e69.js"><link rel="prefetch" href="/JavaDesign/assets/js/11.6acc766e.js"><link rel="prefetch" href="/JavaDesign/assets/js/12.23b434c7.js"><link rel="prefetch" href="/JavaDesign/assets/js/13.c7bd56ab.js"><link rel="prefetch" href="/JavaDesign/assets/js/14.e6ba1455.js"><link rel="prefetch" href="/JavaDesign/assets/js/15.09f2a429.js"><link rel="prefetch" href="/JavaDesign/assets/js/16.0e02ad7e.js"><link rel="prefetch" href="/JavaDesign/assets/js/17.38582cdb.js"><link rel="prefetch" href="/JavaDesign/assets/js/18.2b1220b2.js"><link rel="prefetch" href="/JavaDesign/assets/js/19.9f1ec858.js"><link rel="prefetch" href="/JavaDesign/assets/js/20.eca2590a.js"><link rel="prefetch" href="/JavaDesign/assets/js/21.cd8c8aca.js"><link rel="prefetch" href="/JavaDesign/assets/js/22.2d19dd62.js"><link rel="prefetch" href="/JavaDesign/assets/js/23.5b221701.js"><link rel="prefetch" href="/JavaDesign/assets/js/24.c8619eb9.js"><link rel="prefetch" href="/JavaDesign/assets/js/25.3b56ad5f.js"><link rel="prefetch" href="/JavaDesign/assets/js/27.7dfc9fef.js"><link rel="prefetch" href="/JavaDesign/assets/js/28.4b55146a.js"><link rel="prefetch" href="/JavaDesign/assets/js/29.454be148.js"><link rel="prefetch" href="/JavaDesign/assets/js/3.d635db73.js"><link rel="prefetch" href="/JavaDesign/assets/js/30.29b26fd1.js"><link rel="prefetch" href="/JavaDesign/assets/js/4.74670721.js"><link rel="prefetch" href="/JavaDesign/assets/js/5.caa88291.js"><link rel="prefetch" href="/JavaDesign/assets/js/6.04a9108a.js"><link rel="prefetch" href="/JavaDesign/assets/js/7.e74d07d9.js"><link rel="prefetch" href="/JavaDesign/assets/js/8.b9f62266.js"><link rel="prefetch" href="/JavaDesign/assets/js/9.a69063dc.js">
+    <link rel="stylesheet" href="/JavaDesign/assets/css/0.styles.c0030725.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/JavaDesign/" class="home-link router-link-active"><!----> <span class="site-name">Java设计模式解读</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/JavaDesign/" class="nav-link">首页</a></div><div class="nav-item"><a href="/JavaDesign/DataBase/DataBase01.html" class="nav-link">数据库</a></div><div class="nav-item"><a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">数据结构</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Java之路</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/JavaBaseBook/JavaBase01.html" class="nav-link">Java基础</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/Servlet01.html" class="nav-link router-link-exact-active router-link-active">Servlet</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/FrameBook/Mybatis01.html" class="nav-link">框架学习</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/SpringBootBook/SpringBoot01.html" class="nav-link">Spring Boot</a></li></ul></div></div><div class="nav-item"><a href="/JavaDesign/JavaBook/about.html" class="nav-link">关于</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">分享</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">技术</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/.html" class="nav-link">奇闻妙事</a></li></ul></div></div> <a href="https://github.com/kirigayakazima/JavaDesign" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/JavaDesign/" class="nav-link">首页</a></div><div class="nav-item"><a href="/JavaDesign/DataBase/DataBase01.html" class="nav-link">数据库</a></div><div class="nav-item"><a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">数据结构</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Java之路</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/JavaBaseBook/JavaBase01.html" class="nav-link">Java基础</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/Servlet01.html" class="nav-link router-link-exact-active router-link-active">Servlet</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/FrameBook/Mybatis01.html" class="nav-link">框架学习</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/SpringBootBook/SpringBoot01.html" class="nav-link">Spring Boot</a></li></ul></div></div><div class="nav-item"><a href="/JavaDesign/JavaBook/about.html" class="nav-link">关于</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">分享</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">技术</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/.html" class="nav-link">奇闻妙事</a></li></ul></div></div> <a href="https://github.com/kirigayakazima/JavaDesign" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/JavaDesign/ServletBook/Servlet01.html" class="active sidebar-link">Servlet</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#一、-http协议" class="sidebar-link">一、 HTTP协议</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#二、基本概念" class="sidebar-link">二、基本概念</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#三、服务器" class="sidebar-link">三、服务器</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#四、servlet技术" class="sidebar-link">四、Servlet技术</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#五、生命周期" class="sidebar-link">五、生命周期</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#六、request对象" class="sidebar-link">六、Request对象</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#七、一个简单的登录页面的demo-所有的servlet样板" class="sidebar-link">七、一个简单的登录页面的Demo(所有的Servlet样板)</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#八、servlet中的乱码问题" class="sidebar-link">八、Servlet中的乱码问题</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#九、请求转发" class="sidebar-link">九、请求转发</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#十、重定向" class="sidebar-link">十、重定向</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#十一、cookie" class="sidebar-link">十一、Cookie</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#十二、session" class="sidebar-link">十二、Session</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#十三、servletcontext" class="sidebar-link">十三、ServletContext</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#十四、servletconfig" class="sidebar-link">十四、ServletConfig</a></li><li class="sidebar-sub-header"><a href="/JavaDesign/ServletBook/Servlet01.html#十五、web-xml文件配置" class="sidebar-link">十五、web.xml文件配置</a></li></ul></li><li><a href="/JavaDesign/ServletBook/JSP01.html" class="sidebar-link">JSP学习</a></li><li><a href="/JavaDesign/ServletBook/Ajax01.html" class="sidebar-link">异步js和xml技术</a></li><li><a href="/JavaDesign/ServletBook/EI.html" class="sidebar-link">EI库</a></li><li><a href="/JavaDesign/ServletBook/FilterAndListener.html" class="sidebar-link">过滤器</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="servlet"><a href="#servlet" aria-hidden="true" class="header-anchor">#</a> Servlet</h1> <h2 id="一、-http协议"><a href="#一、-http协议" aria-hidden="true" class="header-anchor">#</a> 一、 HTTP协议</h2> <p>超文本传输协议(HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议，所有的WWW文件都必须遵守这个标准</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>请求协议
+1.请求行:方法(GET/POST)、URL、协议/版本
+2.请求头:(Request/Header)
+3.请求正文穿的
+
+响应协议
+1.状态行:方法(GET/POST)、URL、协议/版本
+2.响应头(Response Header)
+3.响应正文
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><h2 id="二、基本概念"><a href="#二、基本概念" aria-hidden="true" class="header-anchor">#</a> 二、基本概念</h2> <h3 id="_1-post"><a href="#_1-post" aria-hidden="true" class="header-anchor">#</a> (1) post</h3> <p>post请求数据在请求实体中进行发送，在url中看不到具体的请求数据，安全，适合数据量大的数据发送</p> <h3 id="_2-get"><a href="#_2-get" aria-hidden="true" class="header-anchor">#</a> (2) get</h3> <p>get请求数据会以？的形式隔开拼接在请求头中，不安全，没有请求实体部分</p> <h3 id="_3-响应"><a href="#_3-响应" aria-hidden="true" class="header-anchor">#</a> (3) 响应</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>响应格式的结构：
+    响应头：HTTP版本、状态码、状态消息
+    响应头：消息报头、客户端使用的附加信息
+    空行：响应和响应实体之间的，必须要有
+    响应式题：正文，服务器返回给浏览器的信息
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><h3 id="_4-状态码"><a href="#_4-状态码" aria-hidden="true" class="header-anchor">#</a> (4) 状态码</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>200 OK                          //客户端请求成功
+400 Bad Request                 //客户端请求有语法错误，不能被服务器所理解
+401 Unauthorized                //请求未经授权，这个状态码必须和WWW-Authenticate报头域一起使用
+403 Forbidden                   //服务器收到请求，但是拒绝提供服务
+404 Not Found                   //请求资源不存在，eg：输入了错误的URL
+500 Internal Server Error       //服务器发生不可预期的错误
+503 Server Unavailable          //服务器当前不能处理客户端的请求，一段时间后可能恢复正常
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h2 id="三、服务器"><a href="#三、服务器" aria-hidden="true" class="header-anchor">#</a> 三、服务器</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>\bin        -存放启动和关闭Tomcat的可执行文件
+\conf       -存放Tomcat的配置文件
+\lib        -存放库文件
+\logs       -存放日志文件
+\temp       -存放临时文件
+\webapps    -存放web应用
+\work       =存放JSP转化后的Servelt文件
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>安装方法
+必须依赖于JDK，如果闪退，那么在startup.bat里面第一行添加</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>SET JAVA_HOME=(JDK安装目录)
+SET CATALINA_HOME=(Tomcat解压后的目录)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h2 id="四、servlet技术"><a href="#四、servlet技术" aria-hidden="true" class="header-anchor">#</a> 四、Servlet技术</h2> <p>狭义的Servlet是指Java实现的一个接口，广义的Servlet是指任何实现了Servlet接口的类，一般理解为后者。<br></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>特点：
+    运行在支持java的应用服务器上
+    Servlet的实现遵循了服务器能够识别的规则，也就是服务器会自动的根据请求调用对应的servlet进行请求处理
+使用：
+    1.创建java普通类，继承HttpServlet类
+    2.覆写service方法
+    3.在service方法中写逻辑代码
+    4.在webRoot下的WEB-INF文件夹下的web。xml文件中配置servlet
+运行流程：
+    url:http://localhost:8080/project/my
+    url:虚拟项目名/servlet的别名
+    组成:服务器地址:端口号/虚拟项目名(webapps下的文件夹的名称)/servlet的别名(要执行的servlet的url-pattern)
+    
+浏览器发送请求到服务器，服务器根据请求url地址中的url信息在webapps目录下找到对应的项目文件夹，然后在web.xml中检索对应的servlet，找到后调用并执行Servlet
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><h2 id="五、生命周期"><a href="#五、生命周期" aria-hidden="true" class="header-anchor">#</a> 五、生命周期</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>-Servlet的生命周期
+        1.如果没有配置从第一次调用到服务器关闭
+        2.如果Servlet在web.xml中配置了load-on-startup，生命周期为服务器启动到服务器关闭
+        init方法是在Servlet进行初始化的一个方法，会在Servlet第一次加载进行存储时执行
+        destory方法是在servlet被销毁时执行，也就是服务器关闭时
+        
+        
+初始化方法，在servlet第一次加载内容的时候被调用
+service方法是真正处理请求的方法
+destory方法是销毁时的方法
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>Service方法和doGet方法和doPost方法的区别
+    Service方法：可以处理get/post方式的请求，优先调用这个方法覆盖其他方法
+    doGet方法：
+        处理get请求的方法
+    doPost方法：
+        处理post请求的方法
+注意：
+    如果在覆写的service方法中，调用了父类的service方法，则service方法调用完后，会再次根据请求方式相应的doGet和doPost方法执行，所以一般情况下不在覆写的service方法中调用父类的service方法，避免出现405错误
+//这个方法会先调用父类的service方法，然后根据请求的不同去调用不同请求对应的方法
+super.service(rep,reqs)；
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>Servlet的常见错误：
+    404错误：资源未找到
+        原因一：在请求地址中的servlet的别名书写错误
+        原因二：在虚拟项目名称拼写错误
+    500错误：内部服务器错误
+        错误一：
+            java.lang.ClassNotFoundException:com.bjsxt.servlet.ServletMothod
+            解决：
+              在web.xml中校验servlet类的全限定路径是否拼写错误
+        错误二：
+            因为service方法体的代码执行错误导致，逻辑错误
+            解决：
+                根据错误提示对service方法体中的代码进行修改
+    405错误：请求方式不支持
+        原因：
+            请求方式和servlet中的方法不匹配导致的
+        解决：
+            尽量使用service方法进行请求处理，不要使用service方法中调用父类的service方法
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><h2 id="六、request对象"><a href="#六、request对象" aria-hidden="true" class="header-anchor">#</a> 六、Request对象</h2> <p>服务器接收到了浏览器的请求后，会创建一个Request对象，对象中存储了此次请求相关的请求数据，服务器在调用Servlet时会将创建的Request对象作为实参传递给Servlet的方法，比如：service方法</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>request对象：
+        作用：request对象中封存了当前请求的所有请求信息
+        使用：获取请求头数据
+                req.getMethod();
+                req.getRequestURL();
+                req.getScheme();
+              获取请求行数据
+                req.getHeader(&quot;&quot;);
+                req.getHeaderNames();
+              获取用户数据   
+                req.getParameter(&quot;uname&quot;);
+        注意：
+              request对象由tomcat服务器创建，并作为实参传递给处理请求的servlet的service方法 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><div class="language-//获取请求方式 line-numbers-mode"><pre class="language-text"><code>        String method=req.getMethod();
+		System.out.println(method);
+		//获取请求URL
+		StringBuffer url=req.getRequestURL();
+		System.out.println(url);
+		//获取请求URL
+		String uri=req.getRequestURI();
+		System.out.println(uri);
+		//获取请求协议
+		String h=req.getScheme();
+		System.out.println(h);
+		//获取请求行数据
+		
+		//获取指定的请求行信息
+		String value=req.getHeader(&quot;aaa&quot;);
+		//没有这个键，返回null
+		System.out.println(value);
+		
+		Enumeration e=req.getHeaderNames();
+		while (e.hasMoreElements()) {
+			String name=(String) e.nextElement();
+			String value2=req.getHeader(name);
+			System.out.println(name+&quot;&quot;+value2);
+			
+		}
+		//获取用户数据
+		String name=req.getParameter(&quot;uname&quot;);
+		String pwd=req.getParameter(&quot;pwd&quot;);
+		System.out.println(name+&quot;&quot;+pwd);
+		String[] favs=req.getParameterValues(&quot;fav&quot;);
+		if (favs!=null) {
+			for (String fav : favs) {
+				System.out.println(fav);
+			}
+		}
+		//获取所有的用户请求数据的键的枚举集合---req.getParameterName()
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>Response对象：
+	    设置响应头
+ 		    setHeader(String name,String value);	//在响应头里面添加响应信息，但是同键会覆盖
+ 		    addHeader(String name,String value);	//在响应头里面添加响应信息，但是不会覆盖
+ 		设置响应状态
+ 			sendError(int num,String msg);			//自定义响应状态码
+ 		设置响应实体
+ 			resp.getWrite().write(String str);		//响应具体的数据给浏览器
+
+        //响应处理结果
+			//设置响应头
+			resp.setHeader(&quot;mouse&quot;, &quot;1&quot;);
+			resp.setHeader(&quot;mouse&quot;, &quot;2&quot;);
+			resp.addHeader(&quot;key&quot;, &quot;3&quot;);
+			resp.addHeader(&quot;key&quot;, &quot;4&quot;);
+			//设置响应编码格式,下面两种都可以
+			resp.setHeader(&quot;content-type&quot;, &quot;text/html;charset=utf-8&quot;);
+			resp.setContentType(&quot;text/html;charset=utf-8&quot;);
+			//设置响应状态码
+			resp.sendError(405,&quot;this is a error&quot;);
+			//设置响应实体,里面不能写中文
+			resp.getWriter().write(&quot;this is response study&quot;);
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><h2 id="七、一个简单的登录页面的demo-所有的servlet样板"><a href="#七、一个简单的登录页面的demo-所有的servlet样板" aria-hidden="true" class="header-anchor">#</a> 七、一个简单的登录页面的Demo(所有的Servlet样板)</h2> <p>目录格式</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>src___com___bjsxt
+               |____dao
+               |     |____Impl
+               |     |       |____LoginDaoImpl.java
+               |     |       |
+               |     |       |____RegisterDaoImpl.java
+               |     |
+               |     |____LgoinDao.java       
+               |     |
+               |     |____RegisterDao.java
+               |
+               |____pojo
+               |      |____User.java
+               |
+               |
+               |
+               |
+               |
+               |
+               |____service
+               |     |____Impl
+               |     |       |____MethodServiceImpl.java
+               |     |       |
+               |     |       |____RegisterServiceImpl.java
+               |     |
+               |     |____MethodService.java     
+               |     |
+               |     |____RegisterService.java
+               |
+               |____servlet
+                     |____MethodServlet.java
+                     |
+                     |____RegisterServlet.java       
+                     |
+                     |____MyServlet.java
+
+WebRoot
+    |____Method.jsp
+    |
+    |____Register.jsp
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br></div></div><p>具体实现<br> <a href="https://github.com/kirigayakazima/JavaDemo/tree/master/%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%9A%84%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E9%AA%8C%E8%AF%81%E9%80%BB%E8%BE%91" target="_blank" rel="noopener noreferrer">代码链接<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>1.判断u是否为null， 不为null，就能够成功注册或者登陆
+2.设置接口service和Dao
+3.具体实现都在Impl里面
+4.设置一个User,存放uanme，pwd，uid，数据准备和数据库里面的一样，方便存取
+5.在Dao接口的实现里面，进行数据库的操作，记得build path，添加jar包
+6.在Dao接口实现里面，注意的是，jdbc的操作，应该关闭流，返回结果应该是u，在设置注册账号的时候，应该注意的是判断账号没有注册后，应该进行账号的添加，然后进行账号的查找，赋给u，防止出现注册账号成功，但是页面显示的是failed。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h2 id="八、servlet中的乱码问题"><a href="#八、servlet中的乱码问题" aria-hidden="true" class="header-anchor">#</a> 八、Servlet中的乱码问题</h2> <p>1.使用String进行重新编码(建议使用这个)</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>//把浏览器默认的格式转成utf-8的格式，万能格式，使用后可以在uname处填写中文进行注册
+uname=new String(uname.getByte(&quot;iso8859-1&quot;),&quot;utf-8&quot;);
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p>2.使用公共配置</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>post方式：
+    //设置请求编码格式
+    req.setCharacterEncoding(&quot;utf-8&quot;);
+get方式：
+    步骤一：
+            req.setCharacterEncoding(&quot;utf-8&quot;);
+    步骤二：
+            在tomcat服务器的目录下的conf文件下找到server.xml文件，打开进行如下配置
+        
+            &lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;
+                       ConnectionTimeOut=&quot;20000&quot;
+                       redirectPort=&quot;8443&quot; uerBodyEncodingForURI=&quot;true&quot;/&gt;
+                       
+Servlet流程总结：
+        浏览器发起请求到服务器(请求)
+        服务器接收浏览器的请求，进行解析，创建request对象处理请求数据
+        服务器调用对应的servlet进行请求处理，并将request对象作为实参传递给servlet方法
+        servlet的方法执行进行请求处理
+            //设置请求编码格式
+            //设置响应编码格式  
+            //获取请求信息
+            //处理请求信息
+                //创建业务层对象
+                //调用业务层对象的方法
+            //响应处理结果
+        数据流转流程
+            浏览器--&gt;服务器--&gt;数据库
+            浏览器&lt;--服务器&lt;--数据库
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><h2 id="九、请求转发"><a href="#九、请求转发" aria-hidden="true" class="header-anchor">#</a> 九、请求转发</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>//在响应处理结果的位置,path是相对路径，要转发的地址，例如Method.jsp
+req.getRequsetDispatcher(String path).forward(req.resp);
+//特点是一次请求，浏览器地址栏信息不变，请求转发后直接return即可
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>解决了一次请求内的不同servlet的数据的共享问题
+作用域：一次请求内
+特点：服务器创建，每次请求都会创建，生命周期一次请求</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>String str=(String)req.setAttribute(&quot;str&quot;);
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>使用请求转发会造成表单数据重复提交，解决办法是使用重定向</p> <h2 id="十、重定向"><a href="#十、重定向" aria-hidden="true" class="header-anchor">#</a> 十、重定向</h2> <p>解决了表单重复提交的问题，以及当前servlet无法处理的请求问题</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>resp.sendRedirect(String path);
+path:本地路径为url
+     网络路径为资源路径
+特点：两次请求，两个request对象，浏览器地址栏信息改变
+时机:如果请求中有表单数据，而数据又比较重要，不能重复提交，建议使用重定向
+     如果请求被servlet接收后，无法从进行处理，建议使用重定向定位到可以处理的资源
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h2 id="十一、cookie"><a href="#十一、cookie" aria-hidden="true" class="header-anchor">#</a> 十一、Cookie</h2> <p>Cookie：解决了发送不同请求的数据共享问题<br> <a href="https://github.com/kirigayakazima/JavaDemo/tree/master/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8A%A0%E4%B8%8Acookie%E5%85%8D%E7%99%BB%E9%99%86" target="_blank" rel="noopener noreferrer">cookie免登陆<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <div class="language- line-numbers-mode"><pre class="language-text"><code>要使用cookie首先需要创建cookie对象
+Cookie c=new Cookie(&quot;mouse&quot;,&quot;thinkpad&quot;);
+resp.addCookie(c);
+//设置存储时长
+c.setMaxAge(3*24*3600);
+//设置有效路径
+c.setPath(String url);
+//Cookie信息的获取
+Cookie[] cks=req.getCookies();
+if(cks!=null){
+    for(Cookie ck:cks){
+        String name=ck.getName();
+        String value=ck.getValue();
+        System.out.println(name+&quot;:&quot;+value);
+    
+}
+resp.getWriter().write(&quot;cookie学习&quot;);
+注意：
+    一个Cookie对象储存一条数据，多条数据，可以多创建几个cookie对象进行储存
+特点：
+    浏览器端的数据存储技术
+    存储的数据声明再服务器端
+    临时存储：存储在浏览器的运行内存中，浏览器关闭即失效
+    定时存储：设置了cookie的有效期，存储再客户端的硬盘里，在有效期内符合路径要求的请求都会附带该信息
+    默认cookie信息存储好后，每次请求都会附带，除非设置有效路径
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><h2 id="十二、session"><a href="#十二、session" aria-hidden="true" class="header-anchor">#</a> 十二、Session</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>seesion原理：用户第一次访问服务器，服务器会创建一个seesion对象给此用户，并将该seesion对象的JSESSION使用cookie技术存储到浏览器中，保证用户的其他请求能够获取到同一个seesion对象，也保证了不同请求能够获取到的共享的数据
+特点：
+    存储在服务器端
+    服务器进行创建
+    依赖于cookie技术
+    一次会话
+作用：解决了一个用户不同请求处理的数据共享问题
+
+
+//创建seesion对象,既是创建session对象，也是查找，没有的时候就创建，有的时候就查找并且返回
+HttpSession hs=req.getSession();
+如果请求中有seesion标识符也就是JSESSIONID，那么就返回
+如果请求中没有，那么就创建新的seesion对象，将其JSESSIONID作为cookie数据存储在浏览器
+如果seesion对象失效了，也会重新创建一个session对象，并将其JSESSIONID存储在浏览器内存当中
+
+Seesion默认时间30分钟
+设置时间
+//设置生效时间，在5分钟内，一直在用会一直刷新时效，如果5分钟不用就会失效销毁
+hs.setMaxInactiveInterval(300);
+//设置强制失效
+hs.invalidate();
+//存储一个name的键，用法和cookie一样
+hs.setAttribute(&quot;name&quot;, name);
+///获取
+hs.getAttribute(name);
+//存储和获取能够在不同的请求当中，但是seesion必须相同，即浏览器没关闭
+
+
+seesion失效处理：
+    将用户请求中的JSESSIONID和后台获取到的JSESSIONID进行对比，如果一致则seesion没有失效，如果不一致则证明session失效了，重定向到登录页面，重新登陆
+使用时机：一般用户在登陆的时候，项目会将用户的个人信息存储到seesion中，供其他用户的其他请求调用
+注意：
+    JSESSIONID存储在cookie临时存储空间，浏览器关闭即失效
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br></div></div><h2 id="十三、servletcontext"><a href="#十三、servletcontext" aria-hidden="true" class="header-anchor">#</a> 十三、ServletContext</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>解决了不同用户的数据共享问题
+一个项目只有一个 由服务器创建
+生命周期：从服务器启动到服务器关闭
+//创建servletcontext对象
+ServletContext sc=this.getServletContext(); 
+
+//获取ServletContext对象
+		//第一种方式
+		ServletContext sc=(ServletContext) this.getServletContext();
+		//第二种方式
+		ServletContext sc2=(ServletContext) this.getServletConfig().getServletContext();
+		//第三种方式
+		ServletContext sc3=(ServletContext) req.getSession().getServletContext();
+//数据存储和获取,用法和cookie一样
+sc.setAttribute(&quot;str&quot;,&quot;Servlet&quot;);
+sc.getAttribute(&quot;str&quot;);
+//不同的用户可以给ServletContext对象进行数据存取，获得的数据不存在就返回null
+
+获取项目web.xml里面的全局配置数据
+配置方式：注意一组&lt;context-param&gt;标签只能存储一组键值对数据，多组可以声明多个标签进行存储
+&lt;context-param&gt;
+    &lt;param-name&gt;name&lt;/param-name&gt;
+    &lt;param-value&gt;xuaner&lt;/param-value&gt;
+&lt;/context-param&gt;
+作用：将静态数据和代码进行解耦
+//根据键返回值，如果数据不存在就返回null
+sc.getInitParameter(String name);
+//返回键名的枚举
+sc.getInitParameterNames(String name);
+
+//动态获取项目根目录下面资源
+		String path=sc.getRealPath(&quot;&quot;);
+		System.out.println(paths);
+//这个方法只能获取项目根目录下的资源流对象，class文件的流对象需要使用类加载器获取
+		InputStream isInputStream=sc.getResourceAsStream(&quot;&quot;);
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br></div></div><h2 id="十四、servletconfig"><a href="#十四、servletconfig" aria-hidden="true" class="header-anchor">#</a> 十四、ServletConfig</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>作用：
+    ServletConfig对象是Servlet的专属配置对象,每个Servlet都拥有一个单独的ServletConfig对象，用来获取web.xml里面的配置信息
+使用：
+    获取ServletConfig对象
+    获取web.xml中的Servlet配置信息
+    
+//获取ServletConfig对象
+ServletConfig sc=this.getServletConfig();
+//获取web.xml配置
+String code=sc.getInitParameter(&quot;config&quot;);
+System.out.println(code);
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><h2 id="十五、web-xml文件配置"><a href="#十五、web-xml文件配置" aria-hidden="true" class="header-anchor">#</a> 十五、web.xml文件配置</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>全局上下文配置(全局配置参数)
+Servlet配置
+过滤器配置
+监听器配置
+web容器会按照ServletContext-&gt;context-param-&gt;listener-&gt;filter-&gt;servlet这个顺序加载 
+
+热部署
+热部署里面的添加的项目删掉后必须要把config里面的也删除
+&lt;Context path=&quot;/Pet&quot; reloadable=&quot;true&quot; docBase=&quot;F:/PetWeb&quot; /&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/kirigayakazima/JavaDesign/edit/master/ServletBook/Servlet01.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <div class="last-updated"><span class="prefix">上次更新时间：: </span> <span class="time">10/7/2019, 10:57:49 PM</span></div></footer> <div class="page-nav"><p class="inner"><!----> <span class="next"><a href="/JavaDesign/ServletBook/JSP01.html">
+          JSP学习
+        </a>
+        →
+      </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/JavaDesign/assets/js/app.e7717cda.js" defer></script><script src="/JavaDesign/assets/js/2.1544abce.js" defer></script><script src="/JavaDesign/assets/js/26.9cdd79f3.js" defer></script>
+  </body>
+</html>

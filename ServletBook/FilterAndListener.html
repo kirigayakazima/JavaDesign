@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>过滤器 | Java设计模式解读</title>
+    <meta name="description" content="一个Java学习者的践行之路">
+    <link rel="icon" href="/JavaDesign/logo1.jpg">
+    
+    <link rel="preload" href="/JavaDesign/assets/css/0.styles.c0030725.css" as="style"><link rel="preload" href="/JavaDesign/assets/js/app.e7717cda.js" as="script"><link rel="preload" href="/JavaDesign/assets/js/2.1544abce.js" as="script"><link rel="preload" href="/JavaDesign/assets/js/24.c8619eb9.js" as="script"><link rel="prefetch" href="/JavaDesign/assets/js/10.6cb91e69.js"><link rel="prefetch" href="/JavaDesign/assets/js/11.6acc766e.js"><link rel="prefetch" href="/JavaDesign/assets/js/12.23b434c7.js"><link rel="prefetch" href="/JavaDesign/assets/js/13.c7bd56ab.js"><link rel="prefetch" href="/JavaDesign/assets/js/14.e6ba1455.js"><link rel="prefetch" href="/JavaDesign/assets/js/15.09f2a429.js"><link rel="prefetch" href="/JavaDesign/assets/js/16.0e02ad7e.js"><link rel="prefetch" href="/JavaDesign/assets/js/17.38582cdb.js"><link rel="prefetch" href="/JavaDesign/assets/js/18.2b1220b2.js"><link rel="prefetch" href="/JavaDesign/assets/js/19.9f1ec858.js"><link rel="prefetch" href="/JavaDesign/assets/js/20.eca2590a.js"><link rel="prefetch" href="/JavaDesign/assets/js/21.cd8c8aca.js"><link rel="prefetch" href="/JavaDesign/assets/js/22.2d19dd62.js"><link rel="prefetch" href="/JavaDesign/assets/js/23.5b221701.js"><link rel="prefetch" href="/JavaDesign/assets/js/25.3b56ad5f.js"><link rel="prefetch" href="/JavaDesign/assets/js/26.9cdd79f3.js"><link rel="prefetch" href="/JavaDesign/assets/js/27.7dfc9fef.js"><link rel="prefetch" href="/JavaDesign/assets/js/28.4b55146a.js"><link rel="prefetch" href="/JavaDesign/assets/js/29.454be148.js"><link rel="prefetch" href="/JavaDesign/assets/js/3.d635db73.js"><link rel="prefetch" href="/JavaDesign/assets/js/30.29b26fd1.js"><link rel="prefetch" href="/JavaDesign/assets/js/4.74670721.js"><link rel="prefetch" href="/JavaDesign/assets/js/5.caa88291.js"><link rel="prefetch" href="/JavaDesign/assets/js/6.04a9108a.js"><link rel="prefetch" href="/JavaDesign/assets/js/7.e74d07d9.js"><link rel="prefetch" href="/JavaDesign/assets/js/8.b9f62266.js"><link rel="prefetch" href="/JavaDesign/assets/js/9.a69063dc.js">
+    <link rel="stylesheet" href="/JavaDesign/assets/css/0.styles.c0030725.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/JavaDesign/" class="home-link router-link-active"><!----> <span class="site-name">Java设计模式解读</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/JavaDesign/" class="nav-link">首页</a></div><div class="nav-item"><a href="/JavaDesign/DataBase/DataBase01.html" class="nav-link">数据库</a></div><div class="nav-item"><a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">数据结构</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Java之路</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/JavaBaseBook/JavaBase01.html" class="nav-link">Java基础</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/Servlet01.html" class="nav-link">Servlet</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/FrameBook/Mybatis01.html" class="nav-link">框架学习</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/SpringBootBook/SpringBoot01.html" class="nav-link">Spring Boot</a></li></ul></div></div><div class="nav-item"><a href="/JavaDesign/JavaBook/about.html" class="nav-link">关于</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">分享</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">技术</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/.html" class="nav-link">奇闻妙事</a></li></ul></div></div> <a href="https://github.com/kirigayakazima/JavaDesign" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/JavaDesign/" class="nav-link">首页</a></div><div class="nav-item"><a href="/JavaDesign/DataBase/DataBase01.html" class="nav-link">数据库</a></div><div class="nav-item"><a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">数据结构</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Java之路</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/JavaBaseBook/JavaBase01.html" class="nav-link">Java基础</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/Servlet01.html" class="nav-link">Servlet</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/FrameBook/Mybatis01.html" class="nav-link">框架学习</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/SpringBootBook/SpringBoot01.html" class="nav-link">Spring Boot</a></li></ul></div></div><div class="nav-item"><a href="/JavaDesign/JavaBook/about.html" class="nav-link">关于</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">分享</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">技术</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/.html" class="nav-link">奇闻妙事</a></li></ul></div></div> <a href="https://github.com/kirigayakazima/JavaDesign" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/JavaDesign/ServletBook/Servlet01.html" class="sidebar-link">Servlet</a></li><li><a href="/JavaDesign/ServletBook/JSP01.html" class="sidebar-link">JSP学习</a></li><li><a href="/JavaDesign/ServletBook/Ajax01.html" class="sidebar-link">异步js和xml技术</a></li><li><a href="/JavaDesign/ServletBook/EI.html" class="sidebar-link">EI库</a></li><li><a href="/JavaDesign/ServletBook/FilterAndListener.html" class="active sidebar-link">过滤器</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="过滤器"><a href="#过滤器" aria-hidden="true" class="header-anchor">#</a> 过滤器</h1> <div class="language- line-numbers-mode"><pre class="language-text"><code>作用：
+    对服务器接受请求资源和响应给浏览器的资源进行管理保护Servlet
+使用：
+    创建一个实现Filter接口的普通java类
+    复写接口方法
+        init方法
+        doFilter方法
+            在doFilter方法中添加chain.doFilter(request,response);
+        将数据流转给servlet
+        destory方法
+    在webX.xml中配置过滤器
+        &lt;filter&gt;
+            &lt;filter-name&gt;myFilter&lt;/filter-name&gt;
+            &lt;filter-class&gt;com.bjsxt.filter.MyFilter&lt;/filter-class&gt;
+        &lt;/filter&gt;
+        &lt;filter-mapping&gt;
+            &lt;filter-name&gt;myFilter&lt;/filter-name&gt;
+            &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;/filter-mapping&gt;
+    注意：
+        url-pattern:/*
+            表示拦截所有请求
+         url-pattern:*.do
+            表示所有以.do结尾的请求，一般是用来进行模块拦截处理的
+         url-pattern:/url
+            表示拦截指定url的请求，针对某个Servlet的请求进行拦截，保护Servlet
+过滤器的生命周期：
+    服务器的启动到服务器关闭
+执行：
+    浏览器发起请求到服务器，服务器接收到请求后，根据url信息在web.xml中找到对应的过滤器执行doFilter方法，该方法对此次请求进行处理后如果符合要求则放行，放行后，如果还有符合要求的过滤器则继续进行过滤，找到执行对应的servlet进行请求处理，servl对请求处理完毕后，也就service方法结束了，还需要继续返回相应的doFilter方法继续执行
+案例：
+    统一编码格式设置
+    session管理
+    权限设置
+    资源管理（统一水印，和谐词汇等等）
+    
+    
+//判断session
+    HttpSession hs=((HttpServletRequest) request).getSession();
+    if(hs.getAttribute(&quot;user&quot;)==null){
+        //如果session为空，那么就直接重定向给login
+        ((HttpServletResponse) response).sendRedirect(&quot;/login.jsp&quot;);
+        
+    }else{
+        //如果存在。那就放行
+        chain.doFilter(request,response);
+    }
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br></div></div><h1 id="监听器"><a href="#监听器" aria-hidden="true" class="header-anchor">#</a> 监听器</h1> <div class="language- line-numbers-mode"><pre class="language-text"><code>作用：
+    监听作用域对象request 、session、application的创建】销毁和内容的改变
+使用：
+    创建一个实现了指定接口的java类
+        监听Servlet---&gt;ServletRequestListener
+            requestInitialized(ServletRequestEvent sre)//创建
+            requestDestoryed(ServletRequestEvent sre)//销毁 
+        监听Servlet---&gt;ServletRequestAttributeListener
+            attributeAdded(ServletRequestAttributeEvent srae)
+            attributeRemoved(ServletRequestAttributeEvent srae)
+            attributeReplaced(ServletRequestAttributeEvent srae)
+            注意：形参可以获取被监听的数据
+            srae.getName();
+            srae.getValue();
+        监听session---&gt;HttpSessionListener
+            sessionCreated(HttpSessionEvent se)
+            sessionDestroyed(HttpSessionEvent se)
+        监听session---&gt;HttpSessionAttributeListener 监听session数据的变更
+            attributeAdded(HttpSessionBindingEvent event)
+            attributeRemoved(HttpSessionBindingEvent event)
+            attributeReplaced(HttpSessionBindingEvent event)
+            注意：形参可以获取被监听的数据
+            event.getName();
+            event.getValue();
+        监听application---&gt;ServletContextListener
+            contextInitialized(ServletContextEvent sce)
+            contextDestroyed(ServletContextEvent sce)
+            注意：形参可以获取被监听的数据
+            sce.getName();
+            sce.getValue();
+        监听application数据的变更
+            attributeAdded(ServletContextAttributeEvent event)
+            attributeRemoved(ServletContextAttributeEvent event)
+            attributeReplaced(ServletContextAttributeEvent event)    
+        在web.xml配置监听器
+            &lt;listener&gt;
+                &lt;listener-class&gt;com.bjsxt.listener&lt;/listener-class&gt;
+            &lt;/listener&gt;
+    案例：
+        统计当前在线人数
+        统计网页浏览器次数
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br></div></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/kirigayakazima/JavaDesign/edit/master/ServletBook/FilterAndListener.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <div class="last-updated"><span class="prefix">上次更新时间：: </span> <span class="time">10/13/2019, 6:08:41 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/JavaDesign/ServletBook/EI.html" class="prev">
+          EI库
+        </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/JavaDesign/assets/js/app.e7717cda.js" defer></script><script src="/JavaDesign/assets/js/2.1544abce.js" defer></script><script src="/JavaDesign/assets/js/24.c8619eb9.js" defer></script>
+  </body>
+</html>

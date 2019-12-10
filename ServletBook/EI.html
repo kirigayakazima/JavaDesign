@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>EI库 | Java设计模式解读</title>
+    <meta name="description" content="一个Java学习者的践行之路">
+    <link rel="icon" href="/JavaDesign/logo1.jpg">
+    
+    <link rel="preload" href="/JavaDesign/assets/css/0.styles.c0030725.css" as="style"><link rel="preload" href="/JavaDesign/assets/js/app.e7717cda.js" as="script"><link rel="preload" href="/JavaDesign/assets/js/2.1544abce.js" as="script"><link rel="preload" href="/JavaDesign/assets/js/23.5b221701.js" as="script"><link rel="prefetch" href="/JavaDesign/assets/js/10.6cb91e69.js"><link rel="prefetch" href="/JavaDesign/assets/js/11.6acc766e.js"><link rel="prefetch" href="/JavaDesign/assets/js/12.23b434c7.js"><link rel="prefetch" href="/JavaDesign/assets/js/13.c7bd56ab.js"><link rel="prefetch" href="/JavaDesign/assets/js/14.e6ba1455.js"><link rel="prefetch" href="/JavaDesign/assets/js/15.09f2a429.js"><link rel="prefetch" href="/JavaDesign/assets/js/16.0e02ad7e.js"><link rel="prefetch" href="/JavaDesign/assets/js/17.38582cdb.js"><link rel="prefetch" href="/JavaDesign/assets/js/18.2b1220b2.js"><link rel="prefetch" href="/JavaDesign/assets/js/19.9f1ec858.js"><link rel="prefetch" href="/JavaDesign/assets/js/20.eca2590a.js"><link rel="prefetch" href="/JavaDesign/assets/js/21.cd8c8aca.js"><link rel="prefetch" href="/JavaDesign/assets/js/22.2d19dd62.js"><link rel="prefetch" href="/JavaDesign/assets/js/24.c8619eb9.js"><link rel="prefetch" href="/JavaDesign/assets/js/25.3b56ad5f.js"><link rel="prefetch" href="/JavaDesign/assets/js/26.9cdd79f3.js"><link rel="prefetch" href="/JavaDesign/assets/js/27.7dfc9fef.js"><link rel="prefetch" href="/JavaDesign/assets/js/28.4b55146a.js"><link rel="prefetch" href="/JavaDesign/assets/js/29.454be148.js"><link rel="prefetch" href="/JavaDesign/assets/js/3.d635db73.js"><link rel="prefetch" href="/JavaDesign/assets/js/30.29b26fd1.js"><link rel="prefetch" href="/JavaDesign/assets/js/4.74670721.js"><link rel="prefetch" href="/JavaDesign/assets/js/5.caa88291.js"><link rel="prefetch" href="/JavaDesign/assets/js/6.04a9108a.js"><link rel="prefetch" href="/JavaDesign/assets/js/7.e74d07d9.js"><link rel="prefetch" href="/JavaDesign/assets/js/8.b9f62266.js"><link rel="prefetch" href="/JavaDesign/assets/js/9.a69063dc.js">
+    <link rel="stylesheet" href="/JavaDesign/assets/css/0.styles.c0030725.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/JavaDesign/" class="home-link router-link-active"><!----> <span class="site-name">Java设计模式解读</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/JavaDesign/" class="nav-link">首页</a></div><div class="nav-item"><a href="/JavaDesign/DataBase/DataBase01.html" class="nav-link">数据库</a></div><div class="nav-item"><a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">数据结构</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Java之路</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/JavaBaseBook/JavaBase01.html" class="nav-link">Java基础</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/Servlet01.html" class="nav-link">Servlet</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/FrameBook/Mybatis01.html" class="nav-link">框架学习</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/SpringBootBook/SpringBoot01.html" class="nav-link">Spring Boot</a></li></ul></div></div><div class="nav-item"><a href="/JavaDesign/JavaBook/about.html" class="nav-link">关于</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">分享</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">技术</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/.html" class="nav-link">奇闻妙事</a></li></ul></div></div> <a href="https://github.com/kirigayakazima/JavaDesign" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/JavaDesign/" class="nav-link">首页</a></div><div class="nav-item"><a href="/JavaDesign/DataBase/DataBase01.html" class="nav-link">数据库</a></div><div class="nav-item"><a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">数据结构</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Java之路</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/JavaBaseBook/JavaBase01.html" class="nav-link">Java基础</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/Servlet01.html" class="nav-link">Servlet</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/FrameBook/Mybatis01.html" class="nav-link">框架学习</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/SpringBootBook/SpringBoot01.html" class="nav-link">Spring Boot</a></li></ul></div></div><div class="nav-item"><a href="/JavaDesign/JavaBook/about.html" class="nav-link">关于</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">分享</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/JavaDesign/ConstBook/Const01.html" class="nav-link">技术</a></li><li class="dropdown-item"><!----> <a href="/JavaDesign/ServletBook/.html" class="nav-link">奇闻妙事</a></li></ul></div></div> <a href="https://github.com/kirigayakazima/JavaDesign" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/JavaDesign/ServletBook/Servlet01.html" class="sidebar-link">Servlet</a></li><li><a href="/JavaDesign/ServletBook/JSP01.html" class="sidebar-link">JSP学习</a></li><li><a href="/JavaDesign/ServletBook/Ajax01.html" class="sidebar-link">异步js和xml技术</a></li><li><a href="/JavaDesign/ServletBook/EI.html" class="active sidebar-link">EI库</a></li><li><a href="/JavaDesign/ServletBook/FilterAndListener.html" class="sidebar-link">过滤器</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="ei库"><a href="#ei库" aria-hidden="true" class="header-anchor">#</a> EI库</h1> <div class="language- line-numbers-mode"><pre class="language-text"><code> 传统方式获取作用域数据：
+        缺点一：导入包
+        缺点二：需要强转
+        缺点三：获取数据的代码过于麻烦
+使用EI表达式获取作用域数据：
+    作用：获取作用域对象中的数据
+        注意：获取的是pageContext、request、seesion、application四个对象中的数据，其他数据一概不理会，找到了则获取返回，找不到就什么都不做，也不报错
+        语法：
+            ${表达式}
+            表达式：
+                获取请求数据：
+                    request对象存储了请求数据----&gt;param.键名          返回值
+                                             ----&gt;paramvalues.键名    返回的是数组
+                通过setAttribute方法存储到作用域对象中的数据
+                    ${键名} 返回键名所对应方法值
+                    注意：
+                        如果存储的是普通字符串则直接返回
+                        如果存储的是对象，则返回的是对象
+                                获取对象中的数据：
+                                    普通对象
+                                        ${键名.属性名.属性名...}
+                                    集合对象
+                                        list集合---&gt;${键名[角标]}
+                                        map集合---&gt;${键名.map集合存储的键名}
+        作用域查找顺序：
+            默认查找顺序：
+            pageContext--&gt;request--&gt;session--&gt;application
+            注意：
+                每次查找都是从小到大进行查找，找到了则获取，找不到就不继续找了
+            指定查找：写哪一个就从那一个开始查找，依次往后面查找
+                ${pageScope.键名}----${sessionScope.键名}---${requestScope.键名}----${applicationScope.键名}
+        EI表达式的逻辑运算：
+            ${逻辑表达式}   &amp;&amp; || ！
+            ${算术表达式}   + - * /
+            ${关系表达式}   &gt; &lt; ==
+            特殊：
+                三目运算符
+            注意：+指标是加法运算，不能用于字符串连接
+        EI的空值判断：
+            ${empty 键名}
+            作用：
+                判断键名对象的值是否存在有数据
+        EI获取请求头数据和Cookie数据
+            请求头数据：
+                ${header}----&gt;返回所有请求头的数据
+                ${header['键名']}---&gt;返回指定键名的数据
+                ${headevalues['键名']}---&gt; 返回指定的键名(同键不同值)的值的数组
+            获取cookie数据：
+                ${cookie}---&gt;返回存储所有的cookie对象的map集合
+                ${cookie.键名}---&gt;返回指定的cookie对象
+                ${cookie.键名.name}---&gt; 返回指定的cookie对象存储的数据的键名
+                ${cookie.键名.value}---&gt;返回指定的cookie对象存储的数据的值
+                    
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br></div></div><h1 id="jstl标签库"><a href="#jstl标签库" aria-hidden="true" class="header-anchor">#</a> JSTL标签库</h1> <div class="language- line-numbers-mode"><pre class="language-text"><code>作用：用来提升JSP页面的逻辑代码的编码效率
+
+    JSTL核心标签库
+        1.导入包
+        2.声明jstl标签库的引用 
+            &lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+        3.内容：
+             基本标签：
+                //输出给客户端
+                &lt;c:out value=&quot;数据&quot; default=&quot;默认值&quot;&gt;&lt;/c:out&gt;
+                
+                &lt;c:set var=&quot;hello&quot; value=&quot;world&quot; scope=&quot;page&quot;&gt;&lt;/c:set&gt;
+                    作用：存储数据到作用域对象中
+                    var:存储键名
+                    value:存储键值
+                    scope:表示存储的作用域对象page request seesion application
+                &lt;c:remove var=&quot;hello&quot; scpoe=&quot;page&quot; /&gt;
+                    作用：删除作用域的指定键的数据
+                    var：表示要删除的键名
+                    scope：表示要删除的作用域（可选）
+                    注意：
+                        如果不在作用域的情况使用该标签删除数据，会将四个作用域对象中的符合要求的数据全部删除
+                &lt;c:if test=&quot;${表达式}&quot;&gt;
+                        前端代码
+                &lt;/c:if&gt;
+                    作用：进行逻辑判断，相当于java代码的分支判断
+                    注意：
+                        逻辑判断标签需要依赖于EI的逻辑运算，也就是表达式中涉及到的数据必须从作用域当中获取
+                &lt;c:choose&gt;
+                    &lt;c:when test=&quot;&quot;&gt;执行内容&lt;/c:when&gt;
+                    &lt;c:when test=&quot;&quot;&gt;执行内容&lt;/c:when&gt;
+                    &lt;c:when test=&quot;&quot;&gt;执行内容&lt;/c:when&gt;
+                    ...
+                    &lt;c:otherwise&gt;执行内容&lt;/c:otherwise&gt;
+                &lt;/c:choose&gt;
+                    作用：用来进行多条件的逻辑判断，类似java的多分支语句
+                    注意：
+                        条件成立只会执行一次，都不成立则执行otherwise
+                &lt;c:foreach begin=&quot;1&quot; end=&quot;4&quot; step=&quot;2&quot; varStatus=&quot;vs&quot;&gt;
+                    循环体
+                &lt;/c:foreach&gt;
+                作用：
+                    循环内容进行处理
+                使用：
+                    begin：声明循环开始位置
+                    end：声明循环结束位置
+                    step：设置步长
+                    varStatus:声明vs变量记录每次循环的数据（角标，次数，是否是第一次或者最后一次循环）
+                    ${vs.index}---&gt;${vs.count}---&gt;${vs.first}---&gt;${vs.last}
+                    items:声明要遍历的对象，结合EI表达式获取对象
+                    var：声明变量记录每次循环的结果，存储在作用域
+                    
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br></div></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/kirigayakazima/JavaDesign/edit/master/ServletBook/EI.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <div class="last-updated"><span class="prefix">上次更新时间：: </span> <span class="time">10/13/2019, 9:32:31 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/JavaDesign/ServletBook/Ajax01.html" class="prev">
+          异步js和xml技术
+        </a></span> <span class="next"><a href="/JavaDesign/ServletBook/FilterAndListener.html">
+          过滤器
+        </a>
+        →
+      </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/JavaDesign/assets/js/app.e7717cda.js" defer></script><script src="/JavaDesign/assets/js/2.1544abce.js" defer></script><script src="/JavaDesign/assets/js/23.5b221701.js" defer></script>
+  </body>
+</html>
