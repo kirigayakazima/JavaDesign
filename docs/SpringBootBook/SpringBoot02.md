@@ -143,3 +143,90 @@ JSR303数据校验|支持|不支持
     ```
     
 </details>
+
+
+### @PropertySource&@lmportResource
+@PropertySource：加载指定的配置文件
+```Java{3}
+**
+ * @Auther: 清羽玄儿
+ * @Date: 2019/12/6
+ * @Description: com.qym.springboot.bean
+ * @Version: 1.0
+ * 将配置文件中配置的每一个属性的值，映射到这个组件中
+ * @configurationProperties：告诉SpringBoot将本类中的所有属性和配置文件中相关的配置进行绑定
+ * prefix="person"配置文件中哪个下面的所有属性进行一一映射
+ * 只有这个组件是容器中的组件，才能容器提供的@ConfigurationProperties功能；
+ * @ConfigurationProperties（prefix="person"）默认从全局配直文件中获取值；
+ */
+@PropertySource(value={"classpath:person.properties"})
+@Component
+@ConfigurationProperties(prefix = "person")
+public class Person {
+    private String lastName;
+    private Integer age;
+    private Boolean boss;
+    private Date birth;
+
+    private Map<String,Object> maps;
+    private List<Object> lists;
+    private Dog dog;
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", boss=" + boss +
+                ", birth=" + birth +
+                ", maps=" + maps +
+                ", lists=" + lists +
+                ", dog=" + dog +
+                '}';
+    }
+
+```
+**@lmportResource**：导入Spring的配置文件，让配置文件里面的内容生效
+
+Spring Boot里面没有Spring的配置文件，我们自己编写的配置文件，也不能自动识别
+
+想让Spring的配置文件生效，加载进来
+@ImportResource标注在一个配置类上
+```Java{3}
+@ImportResource（locations={"classpath:beans.xml"}）
+导入Spring的配置文件让其生效
+```
+
+```xml{3}
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="helloService" class="service.HelloService"></bean>
+</beans>
+```
+SpringBoot推荐给容器中添加组件的方式:推荐使用全注解的方式
+
+1、配置类======Spring配置文件
+
+2、使用@Bean给容器中添加组件
+```Java{3}
+/**
+ * @Auther: 清羽玄儿
+ * @Date: 2019/12/10
+ * @Description: com.qym.springboot.config
+ * @Version: 1.0
+ * @Configuration：指明当前类是一个配置类
+ * 就是来替代之前的spring配置文件在配置文件中用<bean><bean/>标签添加组件
+ */
+@Configuration
+public class MyAppConfig {
+    //将方法的返回值添加到容器中:容器中这个组件默认的id就是方法名
+    @Bean
+    public HelloService helloService(){
+        System.out.println("配置类@Bean给容器中添加了组件...");
+        return new HelloService();
+    }
+}
+
+```
